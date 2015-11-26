@@ -16,7 +16,7 @@ namespace ClassLibrary
             {
                 using (StreamWriter sw = File.CreateText(path))
                 {
-                    sw.WriteLine(action);
+                    sw.WriteLine(DateTime.Now + " " + action);
                 }
             }
 
@@ -24,7 +24,7 @@ namespace ClassLibrary
             {
                 using (StreamWriter sw = File.AppendText(path))
                 {
-                    sw.WriteLine(action);
+                    sw.WriteLine(DateTime.Now+" "+action);
                 }
             }
         }
