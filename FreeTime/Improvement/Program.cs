@@ -20,8 +20,7 @@ namespace Improvement
             action.Add(user.Name, message);
 
             string text=action.List(user.Name);
-            Console.WriteLine();
-            Console.WriteLine("Message from {0} message: {1}", user.Name, text);
+            Console.WriteLine("Message from {0} : {1}", user.Name, text);
             Console.ReadKey();
         }
     }

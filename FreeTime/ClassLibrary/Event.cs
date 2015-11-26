@@ -12,21 +12,9 @@ namespace ClassLibrary
         public void Add(string userName, string action)
         {
             string path = @"C:\Users\NavzaR\Documents\Project\" + userName + ".txt";
-            if (!File.Exists(path))
-            {
-                using (StreamWriter sw = File.CreateText(path))
-                {
-                    sw.WriteLine(DateTime.Now + " " + action);
-                }
-            }
-
-            else
-            {
-                using (StreamWriter sw = File.AppendText(path))
-                {
-                    sw.WriteLine(DateTime.Now+" "+action);
-                }
-            }
+            StreamWriter sw = (!File.Exists(path)) ? File.CreateText(path) : File.AppendText(path);
+            sw.WriteLine(DateTime.Now + " " + action);
+            sw.Close(); 
         }
 
         public string List(string userName)
@@ -36,7 +24,6 @@ namespace ClassLibrary
             if (File.Exists(path))
             {
                 text = File.ReadAllText(path);
-                
             }
             return text;
         }
