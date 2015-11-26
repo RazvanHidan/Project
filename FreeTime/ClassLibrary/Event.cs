@@ -9,23 +9,39 @@ namespace ClassLibrary
 {
     public class Event
     {
+        private string[] arg;
+        public int count;
+
+        public Event()
+        {
+            arg = null;
+            count = 0;
+        }
+
         public void Add(string userName, string action)
         {
-            string path = @"C:\Users\NavzaR\Documents\Project\" + userName + ".txt";
+            string path = Directory.GetCurrentDirectory() + "\\" + userName + ".txt";
             StreamWriter sw = (!File.Exists(path)) ? File.CreateText(path) : File.AppendText(path);
             sw.WriteLine(DateTime.Now + " " + action);
-            sw.Close(); 
+            sw.Close();
         }
 
         public string List(string userName)
         {
-            string path = @"C:\Users\NavzaR\Documents\Project\" + userName + ".txt";
-            string text="";
+            string path = Directory.GetCurrentDirectory() + "\\" + userName + ".txt";
+            string text = "";
             if (File.Exists(path))
             {
                 text = File.ReadAllText(path);
             }
             return text;
+        }
+
+        public void AddMessage(string message)
+        {
+            count++;
+            Array.Resize(ref arg,count);
+            arg[count-1] = message;
         }
     }
 }

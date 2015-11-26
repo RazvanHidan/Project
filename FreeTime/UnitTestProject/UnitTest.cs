@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Should;
 
 namespace UnitTestProject
 {
@@ -7,8 +8,11 @@ namespace UnitTestProject
     public class UnitTest
     {
         [TestMethod]
-        public void TestMethod1()
+        public void TestAdd()
         {
+            var array = new ClassLibrary.Event();
+            array.AddMessage("Testing");
+            array.count.ShouldEqual(1);
         }
     }
 }
