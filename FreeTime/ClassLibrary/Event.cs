@@ -28,5 +28,17 @@ namespace ClassLibrary
                 }
             }
         }
+
+        public string List(string userName)
+        {
+            string path = @"C:\Users\NavzaR\Documents\Project\" + userName + ".txt";
+            string text="";
+            if (File.Exists(path))
+            {
+                text = File.ReadAllText(path);
+                
+            }
+            return text;
+        }
     }
 }

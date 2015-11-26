@@ -18,6 +18,10 @@ namespace Improvement
             Console.WriteLine("Add your message:");
             string message = Console.ReadLine();
             action.Add(user.Name, message);
+
+            string text=action.List(user.Name);
+            Console.WriteLine("User {0} message is: {1}", user.Name, text);
+            Console.ReadKey();
         }
     }
 }
