@@ -11,17 +11,26 @@ namespace Improvement
     {
         static void Main(string[] args)
         {
-            ClassLibrary.User user = new ClassLibrary.User();
-            Console.WriteLine("Enter User Name:");
-            user.Name = Console.ReadLine();
+            string path = Directory.GetCurrentDirectory() + "\\" + "Razvan.txt";
+            if (args.Contains("add") || args.Contains("list"))
+            {
+                ClassLibrary.Activity activity = new ClassLibrary.Activity();
 
-            ClassLibrary.Event action = new ClassLibrary.Event();
-            Console.WriteLine("Add your message:");
-            string message = Console.ReadLine();
-            action.Add(user.Name, message);
+                if (args.Length > 1)
+                {
+                    if (args[0] == "add")
+                    {
+                        activity.Add(args[1], path);
+                    }
+                }
 
-            string text=action.List(user.Name);
-            Console.WriteLine("Message from {0} : {1}", user.Name, text);
+                if (args.Length == 1 && args[0] == "list")
+                {
+                    Console.WriteLine(activity.List(path));
+                }
+            }
+            else
+                Console.WriteLine("Use add or list");
             Console.ReadKey();
         }
     }
