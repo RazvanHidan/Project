@@ -24,5 +24,28 @@ namespace ClassLibrary
             }
             else return "File not exist";
         }
+
+        public string ListWeek(string path)
+        {
+            string line;
+            string result = "";
+            DateTime date;
+
+            if (File.Exists(path))
+            {
+                StreamReader file = new StreamReader(path);
+                while ((line = file.ReadLine()) != null)
+                {
+                    string[] separete = line.Split(' ');
+                    date = Convert.ToDateTime(separete[0] + " " + separete[1] + " " + separete[2]);
+                    if (date.CompareTo(DateTime.Now.AddDays(-7))==1)
+                    {
+                        result += line + Environment.NewLine;
+                    }
+                }
+                file.Close();
+            }
+            return result;
+        } 
     }
 }

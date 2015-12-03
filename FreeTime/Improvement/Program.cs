@@ -22,6 +22,10 @@ namespace Improvement
                     {
                         activity.Add(args[1], path);
                     }
+                    else if (args[0] == "list" && args[1] == "week")
+                    {
+                        Console.WriteLine(activity.ListWeek(path));
+                    }
                 }
 
                 if (args.Length == 1 && args[0] == "list")
@@ -30,7 +34,7 @@ namespace Improvement
                 }
             }
             else
-                Console.WriteLine("Use add or list");
+                Console.WriteLine("Use add, list or list week");
             Console.ReadKey();
         }
     }
