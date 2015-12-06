@@ -12,7 +12,9 @@ namespace ClassLibrary
         public void Add(string add, string path)
         {
             StreamWriter sw = (!File.Exists(path)) ? File.CreateText(path) : File.AppendText(path);
-            sw.WriteLine(DateTime.Now + " " + add);
+            DateTime date = DateTime.Now;
+            string formatDate = "dd/MM/yyyy HH:mm:ss ";
+            sw.WriteLine(date.ToString(formatDate)+ add);
             sw.Close();
         }
 
