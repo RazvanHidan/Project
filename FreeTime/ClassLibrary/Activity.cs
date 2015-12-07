@@ -8,14 +8,16 @@ using System.IO;
 namespace ClassLibrary
 {
     public class Activity
+
     {
-        public void Add(string add, string path)
+        public void Add(string add,string path)
         {
-            StreamWriter sw = (!File.Exists(path)) ? File.CreateText(path) : File.AppendText(path);
-            DateTime date = DateTime.Now;
-            string formatDate = "dd/MM/yyyy HH:mm:ss ";
-            sw.WriteLine(date.ToString(formatDate)+ add);
-            sw.Close();
+            using (StreamWriter sw = (!File.Exists(path)) ? File.CreateText(path) : File.AppendText(path))
+            {
+                DateTime date = DateTime.Now;
+                string formatDate = "MM/dd/yyyy HH:mm:ss ";
+                sw.WriteLine(date.ToString(formatDate) + add);
+            }
         }
 
         public string List(string path)
@@ -31,23 +33,81 @@ namespace ClassLibrary
         {
             string line;
             string result = "";
-            DateTime date;
 
             if (File.Exists(path))
             {
-                StreamReader file = new StreamReader(path);
-                while ((line = file.ReadLine()) != null)
+                using (StreamReader file = new StreamReader(path))
                 {
-                    string[] separete = line.Split(' ');
-                    date = Convert.ToDateTime(separete[0] + " " + separete[1] + " " + separete[2]);
-                    if (date.CompareTo(DateTime.Now.AddDays(-7))==1)
+                    bool list = false;
+                    DateTime dateValue;
+                    while ((line = file.ReadLine()) != null)
                     {
-                        result += line + Environment.NewLine;
+                        string[] separete = line.Split(' ');
+                        if ((separete.Length > 1) && (DateTime.TryParse(separete[0] + " " + separete[1], out dateValue)))
+                        {
+                            if (dateValue.CompareTo(DateTime.Now.AddDays(-7)) == 1)
+                            {
+                                list = true;
+                            }
+                        }
+                        else
+                        {
+                            list = true;
+                        }
+
+                        if (list)
+                        {
+                            result += line + Environment.NewLine;
+                        }
+                        list = false;
                     }
                 }
-                file.Close();
             }
+            DeleteLine(7, path);
             return result;
-        } 
+        }
+
+        private void DeleteLine(int line, string path)
+        {
+            StringBuilder sb = new StringBuilder();
+            using (StreamReader sr = new StreamReader(path))
+            {
+                int count = 0;
+                while (!sr.EndOfStream)
+                {
+                    count++;
+                    if (count != line) 
+                    {
+                        using (StringWriter sw = new StringWriter(sb))
+                        {
+                            sw.WriteLine(sr.ReadLine());
+                        }
+                    }
+                    else
+                    {
+                        sr.ReadLine();
+                    }
+                }
+            }
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+               sw.Write(sb.ToString());
+            }
+        }
+
+        public void ChangeMessage(string message,string path)
+        {
+
+        }
+
+        public void ChangeDate(string date, string path)
+        {
+
+        }
+
+        public void Change(string message,string date,string path)
+        {
+
+        }
     }
 }
