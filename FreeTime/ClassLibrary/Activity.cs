@@ -63,7 +63,6 @@ namespace ClassLibrary
                     }
                 }
             }
-            DeleteLine(7, path);
             return result;
         }
 
@@ -95,19 +94,78 @@ namespace ClassLibrary
             }
         }
 
-        public void ChangeMessage(string message,string path)
+        public void ChangeMessage(int line, string message, string path)
         {
-
+            StringBuilder sb = new StringBuilder();
+            using (StreamReader sr = new StreamReader(path))
+            {
+                int count = 0;
+                while (!sr.EndOfStream)
+                {
+                    count++;
+                    if (count != line)
+                    {
+                        using (StringWriter sw = new StringWriter(sb))
+                        {
+                            sw.WriteLine(sr.ReadLine());
+                        }
+                    }
+                    else
+                    {
+                        using (StringWriter sw = new StringWriter(sb))
+                        {
+                            string[] separete = sr.ReadLine().Split(' ');
+                            Array.Resize(ref separete, 3);
+                            separete[2] = message;
+                            sw.WriteLine(string.Join(" ", separete));
+                        }
+                    }
+                }
+            }
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                sw.Write(sb.ToString());
+            }
         }
 
-        public void ChangeDate(string date, string path)
+        public void ChangeDate(int line, string date, string path)
         {
-
+            StringBuilder sb = new StringBuilder();
+            using (StreamReader sr = new StreamReader(path))
+            {
+                int count = 0;
+                while (!sr.EndOfStream)
+                {
+                    count++;
+                    if (count != line)
+                    {
+                        using (StringWriter sw = new StringWriter(sb))
+                        {
+                            sw.WriteLine(sr.ReadLine());
+                        }
+                    }
+                    else
+                    {
+                        using (StringWriter sw = new StringWriter(sb))
+                        {
+                            string[] separete = sr.ReadLine().Split(' ');
+                            separete[0] = date.Split(' ')[0];
+                            separete[1] = date.Split(' ')[1];
+                            sw.WriteLine(string.Join(" ",separete));
+                        }
+                    }
+                }
+            }
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                sw.Write(sb.ToString());
+            }
         }
 
-        public void Change(string message,string date,string path)
+        public void Change(int line,string message,string date,string path)
         {
-
+            ChangeMessage(line, message, path);
+            ChangeDate(line, date, path);
         }
     }
 }

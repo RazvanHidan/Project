@@ -12,7 +12,7 @@ namespace Improvement
         static void Main(string[] args)
         {
             string path = Directory.GetCurrentDirectory() + "\\" + "Razvan.txt";
-            if (args.Contains("add") || args.Contains("list"))
+            if (args.Contains("add") || args.Contains("list")||args.Contains("change"))
             {
                 ClassLibrary.Activity activity = new ClassLibrary.Activity();
 
@@ -26,6 +26,16 @@ namespace Improvement
                     {
                         Console.WriteLine(activity.ListWeek(path));
                     }
+                    else if (args[0] == "change")
+                    {
+                        if ((args.Contains("-message") || args.Contains("-m")) 
+                            && (args.Contains("-date") || args.Contains("-d")))
+                            activity.Change(int.Parse(args[1]),args[3],args[5],path);
+                        else if (args.Contains("-message") || args.Contains("-m"))
+                            activity.ChangeMessage(int.Parse(args[1]), args[3], path);
+                        else if (args.Contains("-date") || args.Contains("-d"))
+                            activity.ChangeDate(int.Parse(args[1]), args[3], path);
+                    }
                 }
 
                 if (args.Length == 1 && args[0] == "list")
@@ -34,8 +44,7 @@ namespace Improvement
                 }
             }
             else
-                Console.WriteLine("Use add, list or list week");
-            Console.ReadKey();
+                Console.WriteLine("Use add, list,list week,change -m/-message or -d/-date");
         }
     }
 }
