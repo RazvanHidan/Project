@@ -14,33 +14,33 @@ namespace Improvement
             string path = Directory.GetCurrentDirectory() + "\\" + "Razvan.txt";
             if (args.Contains("add") || args.Contains("list")||args.Contains("change"))
             {
-                ClassLibrary.Activity activity = new ClassLibrary.Activity();
+                ClassLibrary.Content activity = new ClassLibrary.Content(path);
 
                 if (args.Length > 1)
                 {
                     if (args[0] == "add")
                     {
-                        activity.Add(args[1], path);
+                        activity.Add(args[1]);
                     }
                     else if (args[0] == "list" && args[1] == "week")
                     {
-                        Console.WriteLine(activity.ListWeek(path));
+                        Console.WriteLine(activity.ListWeek());
                     }
                     else if (args[0] == "change")
                     {
                         if ((args.Contains("-message") || args.Contains("-m")) 
                             && (args.Contains("-date") || args.Contains("-d")))
-                            activity.Change(int.Parse(args[1]),args[3],args[5],path);
+                            activity.Change(int.Parse(args[1]),args[3],args[5]);
                         else if (args.Contains("-message") || args.Contains("-m"))
-                            activity.ChangeMessage(int.Parse(args[1]), args[3], path);
+                            activity.ChangeMessage(int.Parse(args[1]), args[3]);
                         else if (args.Contains("-date") || args.Contains("-d"))
-                            activity.ChangeDate(int.Parse(args[1]), args[3], path);
+                            activity.ChangeDate(int.Parse(args[1]), args[3]);
                     }
                 }
 
                 if (args.Length == 1 && args[0] == "list")
                 {
-                    Console.WriteLine(activity.List(path));
+                    Console.WriteLine(activity.List());
                 }
             }
             else
