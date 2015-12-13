@@ -1,4 +1,5 @@
 ﻿using System;
+using ClassLibrary;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,40 +12,24 @@ namespace Improvement
     {
         static void Main(string[] args)
         {
-            string path = Directory.GetCurrentDirectory() + "\\" + "Razvan.txt";
-            if (args.Contains("add") || args.Contains("list")||args.Contains("change"))
+            var path = Directory.GetCurrentDirectory() + "\\" + "Razvan.txt";
+            var stream = File.Open(path, FileMode.OpenOrCreate);
+            var activity = new Activity();
+            var text = new TextRepository(stream);
+            if (args[0] == "add")
             {
-                ClassLibrary.Content activity = new ClassLibrary.Content(path);
-
-                if (args.Length > 1)
-                {
-                    if (args[0] == "add")
-                    {
-                        activity.Add(args[1]);
-                    }
-                    else if (args[0] == "list" && args[1] == "week")
-                    {
-                        Console.WriteLine(activity.ListWeek());
-                    }
-                    else if (args[0] == "change")
-                    {
-                        if ((args.Contains("-message") || args.Contains("-m")) 
-                            && (args.Contains("-date") || args.Contains("-d")))
-                            activity.Change(int.Parse(args[1]),args[3],args[5]);
-                        else if (args.Contains("-message") || args.Contains("-m"))
-                            activity.ChangeMessage(int.Parse(args[1]), args[3]);
-                        else if (args.Contains("-date") || args.Contains("-d"))
-                            activity.ChangeDate(int.Parse(args[1]), args[3]);
-                    }
-                }
-
-                if (args.Length == 1 && args[0] == "list")
-                {
-                    Console.WriteLine(activity.List());
-                }
+                activity.Create(args[1]);
+                text.Add(activity);
             }
-            else
-                Console.WriteLine("Use add, list,list week,change -m/-message or -d/-date");
+            else if (args[0] == "list")
+            {
+                if (args[1] == "week")
+                {
+                    Console.WriteLine(text.ListWeek());
+                }
+                else
+                    Console.WriteLine(text.List());
+            }
         }
     }
 }

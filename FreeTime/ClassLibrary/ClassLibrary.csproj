@@ -41,11 +41,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity.cs" />
-    <Compile Include="IElement.cs" />
-    <Compile Include="TextFile.cs" />
     <Compile Include="CommandLine.cs" />
+    <Compile Include="IElement.cs" />
     <Compile Include="TextRepository.cs" />
-    <Compile Include="User.cs" />
     <Compile Include="Content.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

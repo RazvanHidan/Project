@@ -11,14 +11,6 @@ namespace ClassLibrary
 {
     interface IElement<T>
     {
-
-        // public void Create()
-        //{
-        //var datenow = DateTime.Now;
-        //date = datenow.ToString("G", CultureInfo.InvariantCulture);
-        //this.message = message;
-        //  count = 1;
-        //}
         void Create(T obj);
         IEnumerable<T> Read();
         void Change();
