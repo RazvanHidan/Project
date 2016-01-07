@@ -21,47 +21,53 @@ namespace ClassLibrary
         {
             stream.Seek(0, SeekOrigin.End);
             StreamWriter sw = new StreamWriter(stream);
-            sw.WriteLine(string.Join(" ",activity.Read()));
+            sw.WriteLine(string.Join(" ",activity.List()));
             sw.Flush();
         }
 
-        public string List()
+        public IEnumerable<Activity> List()
         {
             stream.Position = 0;
             StreamReader sr = new StreamReader(stream);
-            return sr.ReadToEnd();
+            string[] contents = sr.ReadToEnd().Split(new string[] { "\r\n" }, 
+                StringSplitOptions.RemoveEmptyEntries);
+            foreach(var line in contents)
+            {
+                var activity = new Activity();
+                activity.ExtractFromString(line);
+                yield return activity;
+            }
         }
 
-        public string ListWeek()
+        public IEnumerable<Activity> ListWeek()
         {
-            string line;
-            string result = "";
-            stream.Position = 0;
-            StreamReader file = new StreamReader(stream);
-            bool list = false;
-            DateTime dateValue;
-            while ((line = file.ReadLine()) != null)
+            foreach(var activity in List())
             {
-                string[] separete = line.Split(' ');
-                if ((separete.Length > 1) && (DateTime.TryParse(separete[0] + " " + separete[1], out dateValue)))
+                foreach(var date in activity.List())
                 {
-                    if (dateValue.CompareTo(DateTime.Now.AddDays(-7)) == 1)
+                    DateTime activityDate;
+                    if (DateTime.TryParse(date,out activityDate))
                     {
-                        list = true;
+                        if(activityDate.CompareTo(DateTime.Now.AddDays(-7)) == 1)
+                        {
+                            yield return activity;
+                        }
                     }
                 }
-                else
-                {
-                    list = true;
-                }
-
-                if (list)
-                {
-                    result += line + Environment.NewLine;
-                }
-                list = false;
             }
-            return result;
+        }
+
+        public void ChangeDate(int activityNumber, string newDate)
+        {
+            int aux = 0;
+            foreach (var activity in List())
+            {
+                aux++;
+                if (aux == activityNumber)
+                {
+                    activity.ChangeDate(newDate);
+                }
+            }
         }
     }
 }

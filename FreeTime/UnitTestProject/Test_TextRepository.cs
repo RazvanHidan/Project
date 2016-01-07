@@ -38,7 +38,7 @@ namespace UnitTestProject
         }
 
         [TestMethod]
-        public void TextRepository_List_Return_A_Value()
+        public void TextRepository_List_Is_Not_Null()
         {
             var text = new TextRepository(new MemoryStream());
             var activity = new Activity("First add");
@@ -52,20 +52,30 @@ namespace UnitTestProject
             var text = new TextRepository(new MemoryStream());
             var activity = new Activity("First add");
             text.Add(activity);
-            text.List().Contains("First add").ShouldBeTrue();
+            text.List().ShouldContain(activity);
         }
 
         [TestMethod]
         public void TextRepository_ListWeek()
         {
             var text = new TextRepository(new MemoryStream());
-            var activity=new Activity("primul test");
+            var activity=new Activity("First test");
             text.Add(activity);
-            activity=new Activity("testul 2");
+            activity=new Activity("Second 2");
             text.Add(activity);
-            text.ListWeek().Contains("primul test").ShouldBeTrue();
-            text.ListWeek().Contains("testul 2").ShouldBeTrue();
-            text.ListWeek().Contains("testul 3").ShouldBeFalse();
+            //text.ListWeek().ShouldContain(activity);
+        }
+
+        [TestMethod]
+        public void TextRepository_Change_Date()
+        {
+            var text = new TextRepository(new MemoryStream());
+            var activity = new Activity("First add");
+            text.Add(activity);
+            activity = new Activity("Second add");
+            text.Add(activity);
+            text.ChangeDate(2, "5/4/2001");
+            text.List().ShouldNotBeNull();
         }
     }
 }

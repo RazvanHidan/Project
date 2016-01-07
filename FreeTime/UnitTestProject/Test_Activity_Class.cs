@@ -32,11 +32,48 @@ namespace UnitTestProject
         }
 
         [TestMethod]
-        public void Activity_Implement_NowDate()
+        public void Activity_Not_Contain()
         {
             var activity = new Activity("Test");
-            string dateNow = DateTime.Now.Date.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture);
-            activity.List().ShouldContain(dateNow);
+            activity.List().ShouldNotContain("Testt");
+        }
+
+        [TestMethod]
+        public void Activity_Contain_Date()
+        {
+            var activity = new Activity("Test");
+            DateTime dateParse;
+            bool containDate = false;
+            foreach(var date in activity.List())
+            {
+                if (DateTime.TryParse(date, out dateParse))
+                    containDate = true;
+            }
+            containDate.ShouldBeTrue();
+        }
+
+        [TestMethod]
+        public void Activity_Contain_TodayDate()
+        {
+            var activity = new Activity("Test");
+            DateTime dateParse;
+            bool containTodayDate = false;
+            foreach (var date in activity.List())
+            {
+                if (DateTime.TryParse(date, out dateParse))
+                    if (dateParse.CompareTo(DateTime.Now) == 1)
+                        containTodayDate = true;
+            }
+            containTodayDate.ShouldBeTrue();
+        }
+
+
+        [TestMethod]
+        public void Activity_Change_Date()
+        {
+            var activity = new Activity("Test");
+            activity.ChangeDate("11/02/2015");
+            activity.List().ShouldContain("02/11/2015 00:00:00");
         }
     }
 }

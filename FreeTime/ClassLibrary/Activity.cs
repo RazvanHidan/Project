@@ -7,35 +7,31 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class Activity:IElement<string>
+    public class Activity
     {
         private string message;
         private string date;
 
-        public void Create(string message)
+        public Activity()
+        {
+            message = null;
+            date = null;
+        }
+
+        public Activity(string message)
         {
             DateTostring(DateTime.Now);
             this.message = message;
         }
 
-        private void DateTostring(DateTime date)
-        {
-            this.date = date.ToString("G", CultureInfo.InvariantCulture);
-        }
-
-        public IEnumerable<string> Read()
+        public IEnumerable<string> List()
         {
             return StringToArray();
         }
 
-        private string[] StringToArray()
+        public void ChangeDate(string newDate)
         {
-            return JoinDateAndMessage().Split(' ');
-        }
-
-        private string JoinDateAndMessage()
-        {
-            return string.Join(" ", date, message);
+            DateTostring(DateTime.Parse(newDate));
         }
 
         public void Change()
@@ -46,6 +42,22 @@ namespace ClassLibrary
         public void Delete()
         {
             throw new NotImplementedException();
+        }
+
+        public void ExtractFromString(string strin)
+        {
+            date = strin.Substring(0, 19);
+            message = strin.Substring(20);
+        }
+
+        private void DateTostring(DateTime date)
+        {
+            this.date = date.ToString("G", CultureInfo.InvariantCulture);
+        }
+
+        private string[] StringToArray()
+        {
+            return new string[2] { date, message };
         }
     }
 }
