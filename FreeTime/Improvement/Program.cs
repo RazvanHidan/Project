@@ -15,31 +15,37 @@ namespace Improvement
             var path = Directory.GetCurrentDirectory() + "\\" + "Razvan.txt";
             var stream = File.Open(path, FileMode.OpenOrCreate);
             var text = new TextRepository(stream);
-            if (args[0] == "add")
+            try
             {
-                text.Add(new Activity(args[1]));
-            }
-            else if (args[0] == "list")
-            {
-                IEnumerable<Activity> list;
-                if (args.Length == 2 && args[1] == "week")
+                if (args[0] == "add")
                 {
-                    list = text.ListWeek();
+                    text.Add(new Activity(args[1]));
                 }
-                else
+                else if (args[0] == "list")
                 {
-                    list = text.List();
-                }
-                foreach (var activity in list)
-                {
-                    foreach (var element in activity.List())
+                    IEnumerable<Activity> list;
+                    if (args.Length == 2 && args[1] == "week")
                     {
-                        Console.Write(" {0}", element);
+                        list = text.ListWeek();
                     }
-                    Console.WriteLine();
+                    else
+                    {
+                        list = text.List();
+                    }
+                    foreach (var activity in list)
+                    {
+                        foreach (var element in activity.List())
+                        {
+                            Console.Write(" {0}", element);
+                        }
+                        Console.WriteLine();
+                    }
                 }
             }
-            Console.ReadKey();
+            catch(Exception e)
+            {
+                Console.WriteLine("{0} ",e);
+            }
         }
     }
 }
