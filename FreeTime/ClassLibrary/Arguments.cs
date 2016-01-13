@@ -1,15 +1,16 @@
 ﻿namespace ClassLibrary
 {
+    using System;
     using System.Collections.Generic;
 
     public class Arguments
     {
         private List<Argument> schema = new List<Argument>();
         private Dictionary<string, string> argsFound = new Dictionary<string, string>();
+        private int firstLineArguments;
 
         public Arguments(string schema, string[] arguments)
         {
-            //this.ParseUsage(schema);
             this.ParseCommands(schema);
             this.Parse(arguments);
         }
@@ -17,18 +18,15 @@
         private void ParseCommands(string commands)
         {
             var command = commands.Split("\n".ToCharArray());
-            ParseUsage(command[0]);
-            if (command.Length > 1)
-                for (int i= 1; i<command.Length; i++)
-                {
-                    foreach (var term in command[i].Split(' '))
-                        schema.Add(new OptionalArgument(term));
-                }
+            foreach (var usage in command)
+                ParseUsage(usage);
+                
         }
 
         private void ParseUsage(string usage)
         {
             var terms = usage.Split(" ".ToCharArray());
+            firstLineArguments = terms.Length;
             foreach (var term in terms)
                 ParseTerm(term);
         }
@@ -54,9 +52,33 @@
         {
             for (int i = 0; i < schema.Count; i++)
             {
-                schema[i].Parse(i < arguments.Length ? arguments[i] : string.Empty);
-                schema[i].SaveValue(this.argsFound);
+                if (i >= firstLineArguments)
+                    try
+                    {
+                        ParseArg(arguments, i);
+                    }
+                    catch
+                    {
+                        FalseArguments(i);
+                        break;
+                    }
+                else
+                {
+                    ParseArg(arguments, i);
+                }
             }
+        }
+
+        private void ParseArg(string[] arguments, int i)
+        {
+            schema[i].Parse(i < arguments.Length ? arguments[i] : string.Empty);
+            schema[i].SaveValue(this.argsFound);
+        }
+
+        private void FalseArguments(int i)
+        {
+            for (int k = i; k < schema.Count; k++)
+                schema[k].SaveValue(argsFound);
         }
 
         private static void CheckThatThereAreArguments(string[] arguments)

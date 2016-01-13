@@ -6,7 +6,7 @@ namespace ClassLibrary
     public class ArgumentValue : Argument
     {
         private readonly string name;
-        private string value;
+        private string value="false";
 
         public ArgumentValue(string name)
         {

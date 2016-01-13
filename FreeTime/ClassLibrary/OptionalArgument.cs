@@ -16,7 +16,7 @@ namespace ClassLibrary
 
         public void Parse(string arg)
         {
-            value = name == $"[{arg}]";//||name==arg;
+            value = name == $"[{arg}]";
 
         }
 

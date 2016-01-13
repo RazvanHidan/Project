@@ -74,5 +74,32 @@ namespace UnitTestProject
             arg["list"].ShouldEqual("false");
             arg["[week]"].ShouldEqual("false");
         }
+
+        [TestMethod]
+        public void Should_handle_multiple_commandsII()
+        {
+            var schema = "list [week]\n" +
+                         "add <message>";
+            var arg = new Arguments(schema, new string[] { "list", "week" });
+            arg["list"].ShouldEqual("true");
+            arg["[week]"].ShouldEqual("true");
+            arg["add"].ShouldEqual("false");
+            arg["<message>"].ShouldEqual("false");
+        }
+
+        [TestMethod]
+        public void Should_handle_triple_commands()
+        {
+            var schema = "list [week]\n" +
+                         "add <message>\n" +
+                         "help [list]";
+            var arg = new Arguments(schema, new string[] { "list", "week", "add", "Go To" });
+            arg["list"].ShouldEqual("true");
+            arg["[week]"].ShouldEqual("true");
+            arg["add"].ShouldEqual("true");
+            arg["<message>"].ShouldEqual("Go To");
+            arg["help"].ShouldEqual("false");
+            arg["[list]"].ShouldEqual("false");
+        }
     }
 }
