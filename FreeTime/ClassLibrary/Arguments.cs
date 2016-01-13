@@ -9,8 +9,21 @@
 
         public Arguments(string schema, string[] arguments)
         {
-            this.ParseUsage(schema);
+            //this.ParseUsage(schema);
+            this.ParseCommands(schema);
             this.Parse(arguments);
+        }
+
+        private void ParseCommands(string commands)
+        {
+            var command = commands.Split("\n".ToCharArray());
+            ParseUsage(command[0]);
+            if (command.Length > 1)
+                for (int i= 1; i<command.Length; i++)
+                {
+                    foreach (var term in command[i].Split(' '))
+                        schema.Add(new OptionalArgument(term));
+                }
         }
 
         private void ParseUsage(string usage)

@@ -46,27 +46,11 @@ namespace UnitTestProject
             bool containDate = false;
             foreach(var date in activity.List())
             {
-                if (DateTime.TryParse(date, out dateParse))
+                if (DateTime.TryParse(date, CultureInfo.InvariantCulture,DateTimeStyles.None,out dateParse))
                     containDate = true;
             }
             containDate.ShouldBeTrue();
         }
-
-        [TestMethod]
-        public void Activity_Contain_TodayDate()
-        {
-            var activity = new Activity("Test");
-            DateTime dateParse;
-            bool containTodayDate = false;
-            foreach (var date in activity.List())
-            {
-                if (DateTime.TryParse(date, out dateParse))
-                    if (dateParse.CompareTo(DateTime.Now) == 1)
-                        containTodayDate = true;
-            }
-            containTodayDate.ShouldBeTrue();
-        }
-
 
         [TestMethod]
         public void Activity_Change_Date()

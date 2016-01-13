@@ -16,7 +16,8 @@ namespace ClassLibrary
 
         public void Parse(string arg)
         {
-            value = name == $"[{arg}]";
+            value = name == $"[{arg}]";//||name==arg;
+
         }
 
         public void SaveValue(IDictionary<string, string> store)
