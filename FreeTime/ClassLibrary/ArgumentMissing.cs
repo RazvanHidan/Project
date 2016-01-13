@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class NoArgument:Exception
+    public class ArgumentMissing:Exception
     {
-        public NoArgument()
+        public ArgumentMissing()
+        {
+        }
+
+        public ArgumentMissing(string message) : base(message)
         {
         }
     }

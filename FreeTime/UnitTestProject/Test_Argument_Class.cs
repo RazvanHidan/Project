@@ -11,26 +11,68 @@ namespace UnitTestProject
     public class Test_Argument_Class
     {
         [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
-        public void No_argument_return_exception()
+        [ExpectedException(typeof(ArgumentMissing))]
+        public void Should_throw_argument_is_missing_if_the_arguments_list_is_empty_when_expecting_an_argument()
         {
-            var arg = new Arguments(new List < string >{ });
-            arg.Parse();
+            var arg = new Arguments("list", new string[] { });
         }
 
         [TestMethod]
-        public void One_valid_argument_should_return_value()
+        public void Should_return_true_for_an_given_positional_argument()
         {
-            var list = new List<string> { "list" };
-            var arg = new Arguments(list);
-            arg[list].ShouldEqual("true");
+            var arg = new Arguments("list", new string[] { "list" });
+            arg["list"].ShouldEqual("true");
         }
 
         [TestMethod]
-        public void Two_valid_argument_should_return_value()
+        public void Should_return_a_positional_argument_and_an_optional_argument_when_given()
         {
-            var arg = new Arguments(new List<string> { "list","week" });
-            arg.Parse().ShouldEqual("true");
+            var arg = new Arguments("list [week]", new string[] { "list", "week" });
+            arg["list"].ShouldEqual("true");
+            arg["[week]"].ShouldEqual("true");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidArgument))]
+        public void Should_throw_argument_missing_when_an_expected_parameter_is_missing()
+        {
+            var arg = new Arguments("list", new string[] { "somethingElse" });
+        }
+
+        [TestMethod]
+        public void Should_return_false_when_querying_the_valaue_of_an_optional_argument_which_is_missing()
+        {
+            var arg = new Arguments("list [week]", "list".Split(" ".ToCharArray()));
+            arg["list"].ShouldEqual("true");
+            arg["[week]"].ShouldEqual("false");
+        }
+
+        [TestMethod]
+        public void Should_support_positional_arguments_with_value()
+        {
+            const string workingOnNextProject = "working on my next big project";
+            var arg = new Arguments("add <message>", new string[] { "add", workingOnNextProject });
+            arg["add"].ShouldEqual("true");
+            arg["<message>"].ShouldEqual(workingOnNextProject);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentMissing))]
+        public void Should_throw_argument_missing_when_a_positional_argument_with_value_is_missing()
+        {
+            var arg = new Arguments("add <message>", new string[] { "add" });
+        }
+
+        [TestMethod]
+        public void Should_handle_multiple_commands()
+        {
+            var schema = "add <message>\n" +
+                         "list [week]";
+            var arg = new Arguments(schema, new string[] { "add", "m" });
+            arg["add"].ShouldEqual("true");
+            arg["<message>"].ShouldEqual("m");
+            arg["list"].ShouldEqual("false");
+            arg["[week]"].ShouldEqual("false");
         }
     }
 }

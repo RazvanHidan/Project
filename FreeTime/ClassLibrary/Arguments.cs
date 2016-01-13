@@ -1,57 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System.Collections.Generic;
+
     public class Arguments
     {
-        private List<string> arg;
+        private List<Argument> schema = new List<Argument>();
+        private Dictionary<string, string> argsFound = new Dictionary<string, string>();
 
-        public Arguments(List<string> arg)
+        public Arguments(string schema, string[] arguments)
         {
-            this.arg = arg;
+            this.ParseUsage(schema);
+            this.Parse(arguments);
         }
 
-        public string Parse()
+        private void ParseUsage(string usage)
         {
-            if (arg[0] == "list")
-                return "true";
-            else if (arg[1] == "week")
-                return "true";
+            var terms = usage.Split(" ".ToCharArray());
+            foreach (var term in terms)
+                ParseTerm(term);
+        }
+
+        private void ParseTerm(string term)
+        {
+            var pattern = new ArgumentPattern(term);
+            if (pattern.IsOptional())
+                schema.Add(new OptionalArgument(term));
+            else if (pattern.IsValue())
+                schema.Add(new ArgumentValue(term));
             else
-                return "false";
+                schema.Add(new CommandArgument(term));
         }
 
-        public string Paarse()
+        private void Parse(string[] arguments)
         {
-            if (arg[0] == "add")
-            {
-                return "true";
-            }
-            else if (arg[0] == "list")
-            {
-                if (arg.Count == 2 && arg[1] == "week")
-                {
-                    return "true";
-                }
-                else
-                {
-                    return "true";
-                }
-            }
-            else return "false";
+            CheckThatThereAreArguments(arguments);
+            ParseArguments(arguments);
         }
-    
 
-        public string this[List<string> arg]
+        private void ParseArguments(string[] arguments)
         {
-            get
+            for (int i = 0; i < schema.Count; i++)
             {
-                return Parse();
+                schema[i].Parse(i < arguments.Length ? arguments[i] : string.Empty);
+                schema[i].SaveValue(this.argsFound);
             }
         }
+
+        private static void CheckThatThereAreArguments(string[] arguments)
+        {
+            if (arguments.Length == 0)
+                throw new ArgumentMissing();
+        }
+
+        public string this[string arg] => argsFound[arg];
     }
 }
