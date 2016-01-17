@@ -8,6 +8,7 @@
         private List<Argument> schema = new List<Argument>();
         private Dictionary<string, string> argsFound = new Dictionary<string, string>();
         private int firstLineArguments;
+        private int numberOfOptinalVariable=0;
 
         public Arguments(string schema, string[] arguments)
         {
@@ -73,8 +74,11 @@
 
         private void ParseArg(string[] arguments, int i)
         {
-            schema[i].Parse(i < arguments.Length ? arguments[i] : string.Empty);
+            var k = i - numberOfOptinalVariable;
+            schema[i].Parse(k < arguments.Length ? arguments[k] : string.Empty);
             schema[i].SaveValue(this.argsFound);
+            if (schema[i].IsOptioanArgument() && arguments.Length > i)
+                numberOfOptinalVariable++;
         }
 
         private void FalseArguments(int i)

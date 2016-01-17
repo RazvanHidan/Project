@@ -14,6 +14,11 @@ namespace ClassLibrary
             this.value = false;
         }
 
+        public bool IsOptioanArgument()
+        {
+            return false;
+        }
+
         public void Parse(string arg)
         {
             value = name == $"[{arg}]";

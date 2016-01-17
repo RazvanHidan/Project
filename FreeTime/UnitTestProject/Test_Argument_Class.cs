@@ -103,7 +103,7 @@ namespace UnitTestProject
         }
 
         [TestMethod]
-        public void Should_handle_optional_multiple_command()
+        public void Should_handle_optional_multiple_command_in_order()
         {
             var schema = "change <line> [--date<date>] [--message<message>]";
             var arg = new Arguments(schema, new string[] { "change", "1", "--d 02.03.2001" });
@@ -113,5 +113,15 @@ namespace UnitTestProject
             arg["[--message<message>]"].ShouldEqual("false");
         }
 
+        [TestMethod]
+        public void Should_handle_optional_multiple_command_stepover()
+        {
+            var schema = "change <line> [--date<date>] [--message<message>]";
+            var arg = new Arguments(schema, new string[] { "change", "1", "--m Need to work" });
+            arg["change"].ShouldEqual("true");
+            arg["<line>"].ShouldEqual("1");
+            arg["[--date<date>]"].ShouldEqual("false");
+            arg["[--message<message>]"].ShouldEqual("Need to work");
+        }
     }
 }

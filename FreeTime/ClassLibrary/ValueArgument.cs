@@ -13,6 +13,11 @@ namespace ClassLibrary
             this.name = name;
         }
 
+        public bool IsOptioanArgument()
+        {
+            return false;
+        }
+
         public void Parse(string arg)
         {
             if (arg == string.Empty)

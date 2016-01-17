@@ -14,6 +14,11 @@ namespace ClassLibrary
             this.command = command;
         }
 
+        public bool IsOptioanArgument()
+        {
+            return false;
+        }
+
         public void Parse(string arg)
         {
             if (command != arg)

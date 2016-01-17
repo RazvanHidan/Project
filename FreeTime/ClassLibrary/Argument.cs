@@ -7,6 +7,7 @@
     {
         void Parse(string arg);
         void SaveValue(IDictionary<string, string> store);
+        bool IsOptioanArgument();
     }
 
 }
