@@ -52,7 +52,7 @@ namespace UnitTestProject
             var text = new TextRepository(new MemoryStream());
             var activity = new Activity("First add");
             text.Add(activity);
-            text.List().ShouldContain(activity);
+            text.List().Equals(activity);
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace UnitTestProject
             text.Add(activity);
             activity=new Activity("Second 2");
             text.Add(activity);
-            //text.ListWeek().ShouldContain(activity);
+            text.ListWeek().Equals(activity);
         }
 
         [TestMethod]

@@ -28,14 +28,14 @@ namespace UnitTestProject
         public void Activity_Contain_Exact_Message()
         {
             var activity = new Activity("Test");
-            activity.List().ShouldContain("Test");
+            activity.List()["message"].ShouldEqual("Test");
         }
 
         [TestMethod]
         public void Activity_Not_Contain()
         {
             var activity = new Activity("Test");
-            activity.List().ShouldNotContain("Testt");
+            activity.List()["message"].ShouldNotEqual("Testt");
         }
 
         [TestMethod]
@@ -44,11 +44,8 @@ namespace UnitTestProject
             var activity = new Activity("Test");
             DateTime dateParse;
             bool containDate = false;
-            foreach(var date in activity.List())
-            {
-                if (DateTime.TryParse(date, CultureInfo.InvariantCulture,DateTimeStyles.None,out dateParse))
-                    containDate = true;
-            }
+            if (DateTime.TryParse(activity.List()["date"], CultureInfo.InvariantCulture, DateTimeStyles.None, out dateParse))
+                containDate = true;
             containDate.ShouldBeTrue();
         }
 
@@ -57,7 +54,7 @@ namespace UnitTestProject
         {
             var activity = new Activity("Test");
             activity.ChangeDate("11/02/2015");
-            activity.List().ShouldContain("02/11/2015 00:00:00");
+            activity.List()["date"].ShouldContain("02/11/2015 00:00:00");
         }
     }
 }

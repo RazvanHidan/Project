@@ -41,18 +41,14 @@ namespace ClassLibrary
 
         public IEnumerable<Activity> ListWeek()
         {
-            foreach(var activity in List())
+            foreach (var activity in List())
             {
-                foreach(var date in activity.List())
+                var act = activity.List();
+                DateTime activityDate;
+                if (DateTime.TryParse(act["date"], out activityDate))
                 {
-                    DateTime activityDate;
-                    if (DateTime.TryParse(date,out activityDate))
-                    {
-                        if(activityDate.CompareTo(DateTime.Now.AddDays(-7)) == 1)
-                        {
-                            yield return activity;
-                        }
-                    }
+                    if (activityDate.CompareTo(DateTime.Now.AddDays(-7)) == 1)
+                        yield return activity;
                 }
             }
         }

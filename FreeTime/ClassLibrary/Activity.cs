@@ -24,9 +24,12 @@ namespace ClassLibrary
             this.message = message;
         }
 
-        public IEnumerable<string> List()
+        public Dictionary<string,string> List()
         {
-            return StringToArray();
+            var activity = new Dictionary<string, string>();
+            activity.Add("date", date);
+            activity.Add("message", message);
+            return activity;
         }
 
         public void ChangeDate(string newDate)
@@ -53,11 +56,6 @@ namespace ClassLibrary
         private void DateTostring(DateTime date)
         {
             this.date = date.ToString("G", CultureInfo.InvariantCulture);
-        }
-
-        private string[] StringToArray()
-        {
-            return new string[2] { date, message };
         }
     }
 }
