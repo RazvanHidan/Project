@@ -18,5 +18,10 @@
         {
             return pattern.Length > 0 && pattern[0] == '[' && pattern[pattern.Length - 1] == ']';
         }
+
+        public bool IsVariableOptional()
+        {
+            return pattern.Length > 0 && pattern.StartsWith("[--") && pattern.EndsWith("]");
+        }
     }
 }

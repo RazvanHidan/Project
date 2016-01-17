@@ -101,5 +101,17 @@ namespace UnitTestProject
             arg["help"].ShouldEqual("false");
             arg["[list]"].ShouldEqual("false");
         }
+
+        [TestMethod]
+        public void Should_handle_optional_multiple_command()
+        {
+            var schema = "change <line> [--date<date>] [--message<message>]";
+            var arg = new Arguments(schema, new string[] { "change", "1", "--d 02.03.2001" });
+            arg["change"].ShouldEqual("true");
+            arg["<line>"].ShouldEqual("1");
+            arg["[--date<date>]"].ShouldEqual("02.03.2001");
+            arg["[--message<message>]"].ShouldEqual("false");
+        }
+
     }
 }

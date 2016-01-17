@@ -34,7 +34,9 @@
         private void ParseTerm(string term)
         {
             var pattern = new ArgumentPattern(term);
-            if (pattern.IsOptional())
+            if (pattern.IsVariableOptional())
+                schema.Add(new VariableOptionalArgument(term));
+            else if (pattern.IsOptional())
                 schema.Add(new OptionalArgument(term));
             else if (pattern.IsValue())
                 schema.Add(new ArgumentValue(term));

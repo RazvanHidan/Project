@@ -17,7 +17,6 @@ namespace ClassLibrary
         public void Parse(string arg)
         {
             value = name == $"[{arg}]";
-
         }
 
         public void SaveValue(IDictionary<string, string> store)
