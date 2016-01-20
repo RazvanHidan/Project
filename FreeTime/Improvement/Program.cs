@@ -12,7 +12,7 @@ namespace Improvement
     {
         static void Main(string[] args)
         {
-            var path = Directory.GetCurrentDirectory() + "\\" + "Razvan.txt";
+            var path = Directory.GetCurrentDirectory() + @"\Razvan.txt";
             var stream = File.Open(path, FileMode.OpenOrCreate);
             var text = new TextRepository(stream);
             try
@@ -34,9 +34,9 @@ namespace Improvement
                     }
                     foreach (var activity in list)
                     {
-                        foreach (var element in activity.List())
+                        foreach (var element in activity.List().Values)
                         {
-                            Console.Write(" {0}", element);
+                            Console.Write($"{element} ");
                         }
                         Console.WriteLine();
                     }

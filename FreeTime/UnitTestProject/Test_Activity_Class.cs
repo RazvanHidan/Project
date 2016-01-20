@@ -44,7 +44,7 @@ namespace UnitTestProject
             var activity = new Activity("Test");
             DateTime dateParse;
             bool containDate = false;
-            if (DateTime.TryParse(activity.List()["date"], CultureInfo.InvariantCulture, DateTimeStyles.None, out dateParse))
+            if (DateTime.TryParse(activity.List()["date"], CultureInfo.DefaultThreadCurrentUICulture, DateTimeStyles.None, out dateParse))
                 containDate = true;
             containDate.ShouldBeTrue();
         }
@@ -53,8 +53,8 @@ namespace UnitTestProject
         public void Activity_Change_Date()
         {
             var activity = new Activity("Test");
-            activity.ChangeDate("11/02/2015");
-            activity.List()["date"].ShouldContain("02/11/2015 00:00:00");
+            activity.ChangeDate("11.02.2015");
+            activity.List()["date"].ShouldContain("11.02.2015 00:00:00");
         }
     }
 }

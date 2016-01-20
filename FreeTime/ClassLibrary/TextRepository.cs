@@ -21,7 +21,7 @@ namespace ClassLibrary
         {
             stream.Seek(0, SeekOrigin.End);
             StreamWriter sw = new StreamWriter(stream);
-            sw.WriteLine(string.Join(" ",activity.List()));
+            sw.WriteLine(string.Join("][",activity.List().Values));
             sw.Flush();
         }
 
@@ -31,7 +31,7 @@ namespace ClassLibrary
             StreamReader sr = new StreamReader(stream);
             string[] contents = sr.ReadToEnd().Split(new string[] { "\r\n" }, 
                 StringSplitOptions.RemoveEmptyEntries);
-            foreach(var line in contents)
+            foreach(string line in contents)
             {
                 var activity = new Activity();
                 activity.ExtractFromString(line);
@@ -47,19 +47,19 @@ namespace ClassLibrary
                 DateTime activityDate;
                 if (DateTime.TryParse(act["date"], out activityDate))
                 {
-                    if (activityDate.CompareTo(DateTime.Now.AddDays(-7)) == 1)
+                    if (activityDate.CompareTo(DateTime.UtcNow.AddDays(-7)) == -1)
                         yield return activity;
                 }
             }
         }
 
-        public void ChangeDate(int activityNumber, string newDate)
+        public void ChangeDate(int id, string newDate)
         {
             int aux = 0;
             foreach (var activity in List())
             {
                 aux++;
-                if (aux == activityNumber)
+                if (aux == id)
                 {
                     activity.ChangeDate(newDate);
                 }

@@ -11,22 +11,27 @@ namespace ClassLibrary
     {
         private string message;
         private string date;
+        private string guid;
 
         public Activity()
         {
             message = null;
             date = null;
+            guid = null;
         }
 
         public Activity(string message)
         {
-            DateTostring(DateTime.Now);
+            DateTostring(DateTime.UtcNow);
             this.message = message;
+            guid = Guid.NewGuid().ToString();
+            guid = guid.Substring(0,8);
         }
 
         public Dictionary<string,string> List()
         {
             var activity = new Dictionary<string, string>();
+            activity.Add("guid", guid);
             activity.Add("date", date);
             activity.Add("message", message);
             return activity;
@@ -47,15 +52,18 @@ namespace ClassLibrary
             throw new NotImplementedException();
         }
 
-        public void ExtractFromString(string strin)
+        public void ExtractFromString(string line)
         {
-            date = strin.Substring(0, 19);
-            message = strin.Substring(20);
+            var element = line.Split(new string[] { "][" }, StringSplitOptions.None);
+            guid = element[0];
+            date = element[1];
+            message = element[2];
         }
 
         private void DateTostring(DateTime date)
         {
-            this.date = date.ToString("G", CultureInfo.InvariantCulture);
+            //this.date = date.ToString("G", CultureInfo.InvariantCulture);
+            this.date = date.ToString();
         }
     }
 }
