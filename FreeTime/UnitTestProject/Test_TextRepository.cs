@@ -13,14 +13,14 @@ namespace UnitTestProject
         [TestMethod]
         public void TextRepository_Initialization()
         {
-            var text = new TextRepository(new MemoryStream());
+            var text = new RepositoryText(new MemoryStream());
             text.ShouldNotBeNull();
         }
 
         [TestMethod]
         public void TextRepository_First_Add()
         {
-            var text = new TextRepository(new MemoryStream());
+            var text = new RepositoryText(new MemoryStream());
             var activity=new Activity("First add");
             text.Add(activity);
             text.ShouldNotBeNull();
@@ -29,7 +29,7 @@ namespace UnitTestProject
         [TestMethod]
         public void TextRepository_Add()
         {
-            var text = new TextRepository(new MemoryStream());
+            var text = new RepositoryText(new MemoryStream());
             var activity = new Activity("First add");
             text.Add(activity);
             activity = new Activity("Second add");
@@ -40,7 +40,7 @@ namespace UnitTestProject
         [TestMethod]
         public void TextRepository_List_Is_Not_Null()
         {
-            var text = new TextRepository(new MemoryStream());
+            var text = new RepositoryText(new MemoryStream());
             var activity = new Activity("First add");
             text.Add(activity);
             text.List().ShouldNotBeNull();
@@ -49,7 +49,7 @@ namespace UnitTestProject
         [TestMethod]
         public void TextRepository_List_Return_Contents()
         {
-            var text = new TextRepository(new MemoryStream());
+            var text = new RepositoryText(new MemoryStream());
             var activity = new Activity("First add");
             text.Add(activity);
             text.List().Equals(activity);
@@ -58,7 +58,7 @@ namespace UnitTestProject
         [TestMethod]
         public void TextRepository_ListWeek()
         {
-            var text = new TextRepository(new MemoryStream());
+            var text = new RepositoryText(new MemoryStream());
             var activity=new Activity("First test");
             text.Add(activity);
             activity=new Activity("Second 2");
@@ -69,7 +69,7 @@ namespace UnitTestProject
         [TestMethod]
         public void TextRepository_Change_Date()
         {
-            var text = new TextRepository(new MemoryStream());
+            var text = new RepositoryText(new MemoryStream());
             var activity = new Activity("First add");
             text.Add(activity);
             activity = new Activity("Second add");

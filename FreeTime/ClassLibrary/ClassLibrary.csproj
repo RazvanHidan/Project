@@ -48,7 +48,9 @@
     <Compile Include="InvalidArgument.cs" />
     <Compile Include="ArgumentMissing.cs" />
     <Compile Include="OptionalArgument.cs" />
-    <Compile Include="TextRepository.cs" />
+    <Compile Include="RepositoryCSV.cs" />
+    <Compile Include="RepositoryHTML.cs" />
+    <Compile Include="RepositoryText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueArgument.cs" />
     <Compile Include="VariableOptionalArgument.cs" />

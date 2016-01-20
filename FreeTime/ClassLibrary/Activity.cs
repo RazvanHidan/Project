@@ -31,7 +31,7 @@ namespace ClassLibrary
         public Dictionary<string,string> List()
         {
             var activity = new Dictionary<string, string>();
-            activity.Add("guid", guid);
+            activity.Add("id", guid);
             activity.Add("date", date);
             activity.Add("message", message);
             return activity;
@@ -52,9 +52,9 @@ namespace ClassLibrary
             throw new NotImplementedException();
         }
 
-        public void ExtractFromString(string line)
+        public void ExtractFromString(string line,string separator)
         {
-            var element = line.Split(new string[] { "][" }, StringSplitOptions.None);
+            var element = line.Split(new string[] { separator }, StringSplitOptions.None);
             guid = element[0];
             date = element[1];
             message = element[2];

@@ -59,6 +59,7 @@
     <Compile Include="Test_Activity_Class.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test_Argument_Class.cs" />
+    <Compile Include="Test_RepositoryCSV.cs" />
     <Compile Include="Test_TextRepository.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class TextRepository
+    public class RepositoryText
     {
         private Stream stream;
 
-        public TextRepository(Stream stream)
+        public RepositoryText(Stream stream)
         {
             this.stream = stream;
         }
@@ -34,7 +34,7 @@ namespace ClassLibrary
             foreach(string line in contents)
             {
                 var activity = new Activity();
-                activity.ExtractFromString(line);
+                activity.ExtractFromString(line,"][");
                 yield return activity;
             }
         }

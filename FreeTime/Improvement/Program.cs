@@ -14,7 +14,7 @@ namespace Improvement
         {
             var path = Directory.GetCurrentDirectory() + @"\Razvan.txt";
             var stream = File.Open(path, FileMode.OpenOrCreate);
-            var text = new TextRepository(stream);
+            var text = new RepositoryText(stream);
             try
             {
                 if (args[0] == "add")
@@ -32,8 +32,18 @@ namespace Improvement
                     {
                         list = text.List();
                     }
+                    var CSV_path = Directory.GetCurrentDirectory() + @"\RazvanCSV.CSV";
+                    var streamCSV = File.Open(CSV_path, FileMode.Create);
+                    var HTML_path = Directory.GetCurrentDirectory() + @"\RazvanHTML.html";
+                    var streamHTML = File.Open(HTML_path, FileMode.Create);
+
+                    
+                    var html = new RepositoryHTML(streamHTML);
+                    html.Add(list);
                     foreach (var activity in list)
                     {
+                        var csv = new RepositoryCSV(streamCSV);
+                        csv.Add(activity);
                         foreach (var element in activity.List().Values)
                         {
                             Console.Write($"{element} ");
