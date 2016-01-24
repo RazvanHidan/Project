@@ -110,7 +110,7 @@ namespace UnitTestProject
             arg["change"].ShouldEqual("true");
             arg["<id>"].ShouldEqual("1");
             arg["[--date<date>]"].ShouldEqual("02.03.2001");
-            arg["[--message<message>]"].ShouldEqual("false");
+            arg["[--message<message>]"].ShouldEqual("");
         }
 
         [TestMethod]
@@ -120,7 +120,7 @@ namespace UnitTestProject
             var arg = new Arguments(schema, new string[] { "change", "5", "--m Need to work" });
             arg["change"].ShouldEqual("true");
             arg["<id>"].ShouldEqual("5");
-            arg["[--date<date>]"].ShouldEqual("false");
+            arg["[--date<date>]"].ShouldEqual("");
             arg["[--message<message>]"].ShouldEqual("Need to work");
         }
     }

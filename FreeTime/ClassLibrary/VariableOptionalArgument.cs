@@ -15,7 +15,7 @@ namespace ClassLibrary
 
         public bool IsOptioanArgument()
         {
-            if(value=="false")
+            if(value=="")
                 return true;
             return false;
         }
@@ -23,7 +23,7 @@ namespace ClassLibrary
         public void Parse(string arg)
         {
            if (arg == string.Empty || !(arg.StartsWith(name.Substring(1, 3))))
-                value = "false";
+                value = "";
             else
             {
                 int indexSpace = arg.IndexOf(' ')+1;
