@@ -37,14 +37,14 @@ namespace ClassLibrary
                         {
                             var HTML_path = Directory.GetCurrentDirectory() + @"\RazvanHTML.html";
                             var streamHTML = File.Open(HTML_path, FileMode.Create);
-                            var html = new RepositoryHTML(streamHTML);
+                            var html = new FormatHTML(streamHTML);
                             html.Add(list);
                         }
-                        else if(arg["[-csv]"] == "true")
+                        else if (arg["[-csv]"] == "true")
                         {
                             var CSV_path = Directory.GetCurrentDirectory() + @"\RazvanCSV.csv";
                             var streamCSV = File.Open(CSV_path, FileMode.Create);
-                            var csv = new RepositoryCSV(streamCSV);
+                            var csv = new FormatCSV(streamCSV);
                             csv.Add(list);
                         }
                     }
@@ -62,11 +62,17 @@ namespace ClassLibrary
                 }
                 else if (args[0] == "change")
                 {
-
+                    var arg = new Arguments("change <id> [--date<date>] [--message<message>]", args);
+                    if (arg["[--date<date>]"] != "")
+                        repository.ChangeDate(arg["id"], arg["[--date<date>]"]);
+                    if (arg["[--message<message>]"] != "")
+                        repository.ChangeDate(arg["id"], arg["[--message<message>]"]);
                 }
                 else if (args[0] == "help")
                 {
-
+                    result += "These shell commands are defined internally.  Type `help' to see this list.";
+                    var nl = Environment.NewLine;
+                    result += $"{nl}Available commands:{nl}add <message>{nl}list [week] [-csv] [-html]{nl}change <id> [--message<message>] [--date<date>]";
                 }
                 else
                 {

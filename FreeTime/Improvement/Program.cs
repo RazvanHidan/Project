@@ -15,8 +15,19 @@ namespace Improvement
             var path = Directory.GetCurrentDirectory() + @"\Razvan.txt";
             var stream = File.Open(path, FileMode.OpenOrCreate);
             var text = new RepositoryText(stream);
-            var parse = new ArgumentsParser(args, text);
-            Console.WriteLine(parse.Result());
+            try
+            {
+                var parse = new ArgumentsParser(args, text);
+                Console.WriteLine(parse.Result());
+            }
+            catch (InvalidArgument e)
+            {
+                Console.WriteLine(e);
+            }
+            catch (ArgumentMissing e)
+            {
+                Console.WriteLine(e);
+            }
             //try
             //{
             //    if (args[0] == "add")

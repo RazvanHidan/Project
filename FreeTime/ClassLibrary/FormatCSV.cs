@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class RepositoryCSV 
+    public class FormatCSV 
     {
         private Stream stream;
 
-        public RepositoryCSV(Stream stream)
+        public FormatCSV(Stream stream)
         {
             this.stream = stream;
         }

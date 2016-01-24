@@ -52,16 +52,43 @@ namespace ClassLibrary
                 }
             }
         }
-
-        public void ChangeDate(int id, string newDate)
+        public void DeleteActivity(string id)
         {
-            int aux = 0;
+            string line;
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                using (StreamWriter writer = new StreamWriter(stream))
+                {
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        if (line.StartsWith(id))
+                            continue;
+                        writer.WriteLine(line);
+                    }
+                }
+            }
+        }
+
+        public void ChangeDate(string id, string newDate)
+        {
             foreach (var activity in List())
             {
-                aux++;
-                if (aux == id)
+                if (activity.List()["id"] == id)
                 {
-                    activity.ChangeDate(newDate);
+                    //DeleteActivity(id);
+                    Add(new Activity(id, newDate, activity.List()["message"]));
+                }
+            }
+        }
+
+        public void ChangeMessage(string id, string newMessage)
+        {
+            foreach (var activity in List())
+            {
+                if (activity.List()["id"] == id)
+                {
+                    //DeleteActivity(id);
+                    Add(new Activity(id, activity.List()["date"], newMessage));
                 }
             }
         }

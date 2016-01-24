@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class RepositoryHTML 
+    public class FormatHTML 
     {
         private Stream stream;
 
-        public RepositoryHTML(Stream stream)
+        public FormatHTML(Stream stream)
         {
             this.stream = stream;
         }

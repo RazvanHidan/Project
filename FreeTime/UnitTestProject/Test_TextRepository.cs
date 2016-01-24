@@ -69,13 +69,31 @@ namespace UnitTestProject
         [TestMethod]
         public void TextRepository_Change_Date()
         {
+            bool test = false;
             var text = new RepositoryText(new MemoryStream());
             var activity = new Activity("First add");
             text.Add(activity);
-            activity = new Activity("Second add");
+            var id = activity.List()["id"];
+            text.ChangeDate(id, "13.04.2001");
+            foreach (var action in text.List())
+                if (id == action.List()["id"] && action.List()["date"].Contains("13.04.2001"))
+                    test = true;
+            test.ShouldBeTrue();
+        }
+
+        [TestMethod]
+        public void TextRepository_Change_message()
+        {
+            bool test = false;
+            var text = new RepositoryText(new MemoryStream());
+            var activity = new Activity("First add");
             text.Add(activity);
-            text.ChangeDate(2, "5/4/2001");
-            text.List().ShouldNotBeNull();
+            var id = activity.List()["id"];
+            text.ChangeMessage(id, "GOgoGo");
+            foreach (var action in text.List())
+                if (id == action.List()["id"] && action.List()["message"].Contains("GOgoGo"))
+                    test = true;
+            test.ShouldBeTrue();
         }
     }
 }

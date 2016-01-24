@@ -76,6 +76,5 @@ namespace UnitTestProject
             stream.Result().ShouldContain("Learn to Ride A Bike");
             stream.Result().ShouldContain("Go to");
         }
-
     }
 }

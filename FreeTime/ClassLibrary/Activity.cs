@@ -28,6 +28,13 @@ namespace ClassLibrary
             guid = guid.Substring(0,8);
         }
 
+        public Activity(string id,string date,string message)
+        {
+            this.date= date;
+            this.message = message;
+            this.guid = id;
+        }
+
         public Dictionary<string,string> List()
         {
             var activity = new Dictionary<string, string>();
@@ -42,14 +49,9 @@ namespace ClassLibrary
             DateTostring(DateTime.Parse(newDate));
         }
 
-        public void Change()
+        public void ChangeMessage(string newMessage)
         {
-            throw new NotImplementedException();
-        }
-
-        public void Delete()
-        {
-            throw new NotImplementedException();
+            message=newMessage;
         }
 
         public void ExtractFromString(string line,string separator)
