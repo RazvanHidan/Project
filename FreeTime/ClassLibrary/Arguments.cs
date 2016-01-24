@@ -77,7 +77,7 @@
             var k = i - numberOfOptinalVariable;
             schema[i].Parse(k < arguments.Length ? arguments[k] : string.Empty);
             schema[i].SaveValue(this.argsFound);
-            if (schema[i].IsOptioanArgument() && arguments.Length > i)
+            if (schema[i].IsOptioanArgument())
                 numberOfOptinalVariable++;
         }
 

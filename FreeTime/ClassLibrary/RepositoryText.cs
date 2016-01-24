@@ -47,7 +47,7 @@ namespace ClassLibrary
                 DateTime activityDate;
                 if (DateTime.TryParse(act["date"], out activityDate))
                 {
-                    if (activityDate.CompareTo(DateTime.UtcNow.AddDays(-7)) == -1)
+                    if (activityDate.CompareTo(DateTime.UtcNow.AddDays(-7)) == 1)
                         yield return activity;
                 }
             }

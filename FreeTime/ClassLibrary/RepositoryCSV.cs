@@ -16,28 +16,30 @@ namespace ClassLibrary
             this.stream = stream;
         }
 
-        public void Add( Activity activity)
+        public void Add(IEnumerable< Activity> activities)
         {
             stream.Seek(0, SeekOrigin.End);
             StreamWriter sw = new StreamWriter(stream);
-            if(stream.Length==0)
-                sw.WriteLine(string.Join(" ; ", activity.List().Keys));
-            sw.WriteLine(string.Join(" ; ", activity.List().Values));
+            if (stream.Length == 0)
+                AddHeader();
+            foreach (var activity in activities)
+            {
+                foreach (var element in activity.List().Values)
+                {
+                    sw.Write($" {element} ;");
+                }
+                sw.WriteLine();
+            }
             sw.Flush();
         }
 
-        public IEnumerable<Activity> List()
+        private void AddHeader()
         {
-            stream.Position = 0;
-            StreamReader sr = new StreamReader(stream);
-            string[] contents = sr.ReadToEnd().Split(new string[] { "\r\n" },
-                StringSplitOptions.RemoveEmptyEntries);
-            foreach (string line in contents)
-            {
-                var activity = new Activity();
-                activity.ExtractFromString(line," ; ");
-                yield return activity;
-            }
+            var activity = new Activity();
+            stream.Seek(0, SeekOrigin.End);
+            StreamWriter sw = new StreamWriter(stream);
+            sw.WriteLine(string.Join(" ; ", activity.List().Keys));
+            sw.Flush();
         }
     }
 }

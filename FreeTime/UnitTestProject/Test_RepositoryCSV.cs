@@ -17,7 +17,6 @@ namespace UnitTestProject
         {
             var csv = new RepositoryCSV(new MemoryStream());
             var activity = new Activity("First add");
-            csv.Add(activity);
         }
     }
 }

@@ -123,5 +123,16 @@ namespace UnitTestProject
             arg["[--date<date>]"].ShouldEqual("");
             arg["[--message<message>]"].ShouldEqual("Need to work");
         }
+
+        [TestMethod]
+        public void Should_handle_optional_multiple_command_stepover1()
+        {
+            var schema = "list [week] [-csv] [-html]";
+            var arg = new Arguments(schema, new string[] { "list", "-html"});
+            arg["list"].ShouldEqual("true");
+            arg["[week]"].ShouldEqual("false");
+            arg["[-csv]"].ShouldEqual("false");
+            arg["[-html]"].ShouldEqual("true");
+        }
     }
 }

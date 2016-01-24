@@ -16,6 +16,7 @@ namespace Improvement
             var stream = File.Open(path, FileMode.OpenOrCreate);
             var text = new RepositoryText(stream);
             var parse = new ArgumentsParser(args, text);
+            Console.WriteLine(parse.Result());
             //try
             //{
             //    if (args[0] == "add")

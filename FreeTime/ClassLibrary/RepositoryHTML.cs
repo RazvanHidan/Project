@@ -33,10 +33,5 @@ namespace ClassLibrary
                 sw.WriteLine("</table></body></html>");
             }
         }
-
-        public IEnumerable<Activity> List()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -16,6 +16,8 @@ namespace ClassLibrary
 
         public bool IsOptioanArgument()
         {
+            if (value ==false)
+                return true;
             return false;
         }
 
