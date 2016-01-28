@@ -54,19 +54,23 @@ namespace ClassLibrary
         }
         public void DeleteActivity(string id)
         {
-            string line;
-            using (StreamReader reader = new StreamReader(stream))
+            var content = new StringBuilder();
+            foreach (var activity in List())
             {
-                using (StreamWriter writer = new StreamWriter(stream))
-                {
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        if (line.StartsWith(id))
-                            continue;
-                        writer.WriteLine(line);
-                    }
-                }
+                if (activity.List()["id"] == id)
+                    continue;
+                content.AppendLine(string.Join("][", activity.List().Values));
             }
+            stream.SetLength(0);    
+            AddToStream(content.ToString());
+        }
+
+        private void AddToStream(string v)
+        {
+            stream.SetLength(0);
+            StreamWriter sw = new StreamWriter(stream);
+            sw.Write(v);
+            sw.Flush();
         }
 
         public void ChangeDate(string id, string newDate)
@@ -75,10 +79,11 @@ namespace ClassLibrary
             {
                 if (activity.List()["id"] == id)
                 {
-                    //DeleteActivity(id);
-                    Add(new Activity(id, newDate, activity.List()["message"]));
+                    Add(new Activity(newDate, activity.List()["message"]));
+                    break;
                 }
             }
+            DeleteActivity(id);
         }
 
         public void ChangeMessage(string id, string newMessage)
@@ -87,10 +92,11 @@ namespace ClassLibrary
             {
                 if (activity.List()["id"] == id)
                 {
-                    //DeleteActivity(id);
-                    Add(new Activity(id, activity.List()["date"], newMessage));
+                    Add(new Activity(activity.List()["date"], newMessage));
+                    break;
                 }
             }
+            DeleteActivity(id);
         }
     }
 }

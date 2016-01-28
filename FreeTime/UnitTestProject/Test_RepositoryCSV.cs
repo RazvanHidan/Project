@@ -15,7 +15,7 @@ namespace UnitTestProject
         [TestMethod]
         public void CSV_Repository_Should_Contain_added_activity()
         {
-            var csv = new FormatCSV(new MemoryStream());
+            var csv = new DocumentCSV(new MemoryStream());
             var activity = new Activity("First add");
         }
     }

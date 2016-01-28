@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class FormatCSV 
+    public class DocumentCSV 
     {
         private Stream stream;
 
-        public FormatCSV(Stream stream)
+        public DocumentCSV(Stream stream)
         {
             this.stream = stream;
         }
@@ -26,7 +26,7 @@ namespace ClassLibrary
             {
                 foreach (var element in activity.List().Values)
                 {
-                    sw.Write($" {element} ;");
+                    sw.Write($" {element} ,");
                 }
                 sw.WriteLine();
             }

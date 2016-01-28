@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ClassLibrary
 {
-    public class FormatHTML 
+    public class DocumentHTML 
     {
         private Stream stream;
 
-        public FormatHTML(Stream stream)
+        public DocumentHTML(Stream stream)
         {
             this.stream = stream;
         }

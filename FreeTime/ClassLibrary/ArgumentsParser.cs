@@ -37,14 +37,14 @@ namespace ClassLibrary
                         {
                             var HTML_path = Directory.GetCurrentDirectory() + @"\RazvanHTML.html";
                             var streamHTML = File.Open(HTML_path, FileMode.Create);
-                            var html = new FormatHTML(streamHTML);
+                            var html = new DocumentHTML(streamHTML);
                             html.Add(list);
                         }
                         else if (arg["[-csv]"] == "true")
                         {
                             var CSV_path = Directory.GetCurrentDirectory() + @"\RazvanCSV.csv";
                             var streamCSV = File.Open(CSV_path, FileMode.Create);
-                            var csv = new FormatCSV(streamCSV);
+                            var csv = new DocumentCSV(streamCSV);
                             csv.Add(list);
                         }
                     }
@@ -64,9 +64,13 @@ namespace ClassLibrary
                 {
                     var arg = new Arguments("change <id> [--date<date>] [--message<message>]", args);
                     if (arg["[--date<date>]"] != "")
-                        repository.ChangeDate(arg["id"], arg["[--date<date>]"]);
+                        repository.ChangeDate(arg["<id>"], args[2]);
                     if (arg["[--message<message>]"] != "")
-                        repository.ChangeDate(arg["id"], arg["[--message<message>]"]);
+                        repository.ChangeMessage(arg["<id>"], args[2]);
+                }
+                else if (args[0] == "del")
+                {
+                    repository.DeleteActivity(args[1]);
                 }
                 else if (args[0] == "help")
                 {

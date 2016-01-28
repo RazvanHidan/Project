@@ -22,17 +22,16 @@ namespace ClassLibrary
 
         public Activity(string message)
         {
-            DateTostring(DateTime.UtcNow);
+            DateTostring(DateTime.Now);
             this.message = message;
-            guid = Guid.NewGuid().ToString();
-            guid = guid.Substring(0,8);
+            guid = Guid.NewGuid().ToString().Substring(0, 8);
         }
 
-        public Activity(string id,string date,string message)
+        public Activity(string date,string message)
         {
             this.date= date;
             this.message = message;
-            this.guid = id;
+            this.guid = Guid.NewGuid().ToString().Substring(0, 8);
         }
 
         public Dictionary<string,string> List()
