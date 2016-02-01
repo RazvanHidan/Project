@@ -65,25 +65,18 @@ namespace ClassLibrary
             AddToStream(content.ToString());
         }
 
-        private void AddToStream(string v)
-        {
-            stream.SetLength(0);
-            StreamWriter sw = new StreamWriter(stream);
-            sw.Write(v);
-            sw.Flush();
-        }
-
         public void ChangeDate(string id, string newDate)
         {
             foreach (var activity in List())
             {
                 if (activity.List()["id"] == id)
                 {
-                    Add(new Activity(newDate, activity.List()["message"]));
+                    var message = activity.List()["message"];
+                    DeleteActivity(id);
+                    Add(new Activity(id,newDate, message));
                     break;
                 }
             }
-            DeleteActivity(id);
         }
 
         public void ChangeMessage(string id, string newMessage)
@@ -92,11 +85,21 @@ namespace ClassLibrary
             {
                 if (activity.List()["id"] == id)
                 {
-                    Add(new Activity(activity.List()["date"], newMessage));
+                    var date = activity.List()["date"];
+                    DeleteActivity(id);
+                    Add(new Activity(id,date, newMessage));
                     break;
                 }
             }
-            DeleteActivity(id);
+            
+        }
+
+        private void AddToStream(string v)
+        {
+            stream.SetLength(0);
+            StreamWriter sw = new StreamWriter(stream);
+            sw.Write(v);
+            sw.Flush();
         }
     }
 }

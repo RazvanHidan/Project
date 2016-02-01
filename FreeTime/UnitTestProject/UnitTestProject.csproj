@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="Test_Activity_Class.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test_Commands.cs" />
     <Compile Include="Test_Main_ArgumentsParse.cs" />
     <Compile Include="Test_Argument_Class.cs" />
     <Compile Include="Test_RepositoryCSV.cs" />
