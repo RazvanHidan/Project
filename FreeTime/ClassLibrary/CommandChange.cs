@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace ClassLibrary
 {
@@ -27,6 +28,16 @@ namespace ClassLibrary
                 change += " message";
             }
             return "Cange" + change;
+        }
+
+        public string Info()
+        {
+            var info = new StringBuilder();
+            info.Append(command);
+            info.Append(' ', 55 - command.Length);
+            info.Append("Changes the activity message, date or both.");
+            info.Append(Environment.NewLine);
+            return info.ToString();
         }
 
         public string Value() => command;

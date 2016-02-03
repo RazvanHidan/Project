@@ -50,6 +50,16 @@ namespace ClassLibrary
             }
             return builder.ToString();
         }
+        
+        public string Info()
+        {
+            var info = new StringBuilder();
+            info.Append(command);
+            info.Append(' ', 55 - command.Length);
+            info.Append("Displays all/last week activities or export HTML or CSV format Documents");
+            info.Append(Environment.NewLine);
+            return info.ToString();
+        }
 
         public string Value() => command;
 

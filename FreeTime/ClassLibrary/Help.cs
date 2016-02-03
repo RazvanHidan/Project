@@ -12,8 +12,14 @@ namespace ClassLibrary
         public  Help()
         {
             var nl = Environment.NewLine;
-            help = nl+"These shell commands are defined internally.  Type `help' to see this list.";
-            help += $"{nl}Available commands:{nl}add <message>{nl}list [week] [-csv] [-html]{nl}change <id> [--message<message>] [--date<date>]";
+            var allinfo = new StringBuilder();
+            allinfo.Append($"{nl}These shell commands are defined internally.  Type `help' to see this list.");
+            allinfo.Append($"{nl}Available commands:{nl}{nl}");
+            allinfo.Append(new CommandAdd().Info());
+            allinfo.Append(new CommandChange().Info());
+            allinfo.Append(new CommandHelp().Info());
+            allinfo.Append(new CommandList().Info());
+            help = allinfo.ToString();
         }
     }
 }

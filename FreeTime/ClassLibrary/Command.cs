@@ -11,5 +11,6 @@ namespace ClassLibrary
     {
         string Execute(Arguments arg, Stream stream);
         string Value();
+        string Info();
     }
 }
