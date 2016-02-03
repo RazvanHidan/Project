@@ -1,17 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace ClassLibrary
 {
+    using System.Collections.Generic;
+    using System.IO;
+
     public class Commands
     {
         private Command command;
         private string[] args;
         private Stream stream;
+        private readonly Dictionary<string, Command> dictonary = new Dictionary<string, Command>
+        {
+            {"add",new CommandAdd() },
+            {"list",new CommandList() },
+            {"change", new CommandChange() },
+            {"help",new CommandHelp() }
+        };
 
         public Commands(string[] args,Stream stream)
         {
@@ -23,15 +28,8 @@ namespace ClassLibrary
 
         private void ParseArguments(string[] args)
         {
-            var commandLine = new CommandPattern(args);
-            if (commandLine.IsAdd())
-                command = new CommandAdd();
-            else if (commandLine.IsList())
-                command = new CommandList();
-            else if (commandLine.IsChange())
-                command = new CommandChange();
-            else if (commandLine.IsHelp())
-                command = new CommandHelp();
+            if (dictonary.ContainsKey(args[0]))
+                command=dictonary[args[0]];
             else
                 throw new InvalidArgument(args[0]);
         }

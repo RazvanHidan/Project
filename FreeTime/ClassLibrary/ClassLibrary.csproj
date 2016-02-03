@@ -44,13 +44,11 @@
     <Compile Include="Arguments\Argument.cs" />
     <Compile Include="Arguments\ArgumentPattern.cs" />
     <Compile Include="Arguments\Arguments.cs" />
-    <Compile Include="ArgumentsParser.cs" />
     <Compile Include="CommandAdd.cs" />
     <Compile Include="Arguments\CommandArgument.cs" />
     <Compile Include="CommandChange.cs" />
     <Compile Include="CommandHelp.cs" />
     <Compile Include="CommandList.cs" />
-    <Compile Include="CommandPattern.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Help.cs" />
