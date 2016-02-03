@@ -113,6 +113,20 @@ namespace UnitTestProject
             }
         }
 
+        [TestMethod]
+        public void Should_List_Table_Header_written_with_uppercase()
+        {
+            using (var stream = new MemoryStream())
+            {
+                GenerateActivity(stream);
+                var repository = new RepositoryText(stream);
+                repository.Add(new Activity("Testing"));
+                var command = new Commands(new string[] { "list" }, stream);
+                command.Execute().ShouldContain("ID");
+                command.Execute().ShouldContain("DATE");
+            }
+        }
+
         private static void GenerateActivity(MemoryStream stream)
         {
             var repository = new RepositoryText(stream);

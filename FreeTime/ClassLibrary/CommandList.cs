@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 
 namespace ClassLibrary
 {
@@ -35,15 +36,32 @@ namespace ClassLibrary
                 csv.Add(list);
                 return "CSV Document create";
             }
+
             foreach (var activity in list)
             {
+                if (builder.Length == 0)
+                    AddHeader(builder,activity);
                 foreach (var element in activity.List().Values)
+                {
                     builder.Append($"{element} ");
+                    builder.Append(' ', 3);
+                }
                 builder.Append(Environment.NewLine);
             }
             return builder.ToString();
         }
 
         public string Value() => command;
+
+        private static void AddHeader(StringBuilder builder,Activity activity)
+        {
+            foreach (var key in activity.List().Keys)
+            {
+                builder.Append(key.ToUpper());
+                builder.Append(' ', (activity.List()[key].Length - key.Length) + 4);
+            }
+                
+            builder.Append(Environment.NewLine);
+        }
     }
 }
