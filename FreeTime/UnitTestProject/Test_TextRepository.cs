@@ -86,7 +86,7 @@ namespace UnitTestProject
         {
             bool test = false;
             var text = new RepositoryText(new MemoryStream());
-            var activity = new Activity("First add");
+            var activity = new Activity(message:"First add");
             text.Add(activity);
             var id = activity.List()["id"];
             text.ChangeMessage(id, "GOgoGo");

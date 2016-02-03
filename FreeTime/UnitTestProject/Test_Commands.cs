@@ -65,7 +65,7 @@ namespace UnitTestProject
             {
                 GenerateActivity(stream);
                 var repository = new RepositoryText(stream);
-                repository.Add(new Activity("12345678", "01.01.2001", "Old Message"));
+                repository.Add(new Activity("12345678", "01.01.2001", "Old Message",""));
                 var command = new Commands(new string[] { "change", "12345678", "--m:New Message" }, stream);
                 command.Execute();
                 ActivitysField(stream, "message").ShouldContain("New Message");
@@ -79,10 +79,25 @@ namespace UnitTestProject
             {
                 GenerateActivity(stream);
                 var repository = new RepositoryText(stream);
-                repository.Add(new Activity("12345678", "01.01.2001", "Old Message"));
+                repository.Add(new Activity("12345678", "01.01.2001", "Old Message",""));
                 var command = new Commands(new string[] { "change", "12345678", "--d:11.11.1010" }, stream);
                 command.Execute();
                 ActivitysField(stream, "date").ShouldContain("11.11.1010");
+            }
+        }
+
+        [TestMethod]
+        public void Should_change_activity_date_and_message()
+        {
+            using (var stream = new MemoryStream())
+            {
+                GenerateActivity(stream);
+                var repository = new RepositoryText(stream);
+                repository.Add(new Activity("12345678", "01.01.2001", "Old Message", ""));
+                var command = new Commands(new string[] { "change", "12345678", "--d:11.11.1010", "--m:New message" }, stream);
+                command.Execute();
+                ActivitysField(stream, "date").ShouldContain("11.11.1010");
+                ActivitysField(stream, "message").ShouldContain("New message");
             }
         }
 
@@ -107,7 +122,7 @@ namespace UnitTestProject
                 GenerateActivity(stream);
                 var repository = new RepositoryText(stream);
                 var date = DateTime.UtcNow.AddDays(-8).ToString();
-                repository.Add(new Activity("12345678", date, "Old Message"));
+                repository.Add(new Activity("12345678", date, "Old Message",""));
                 var command = new Commands(new string[] { "list", "week" }, stream);
                 command.Execute().ShouldNotContain("Old Message");
             }
@@ -124,6 +139,33 @@ namespace UnitTestProject
                 var command = new Commands(new string[] { "list" }, stream);
                 command.Execute().ShouldContain("ID");
                 command.Execute().ShouldContain("DATE");
+            }
+        }
+        
+        [TestMethod]
+        public void Should_add_to_stream_a_new_activity_with_project_label()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var command = new Commands(new string[] { "add", "--project:Project Number One", "New Activity" }, stream);
+                command.Execute().Equals("Added a new activity");
+                ActivitysField(stream, "message").ShouldContain("New Activity");
+                ActivitysField(stream, "project").Contains("Project Number One");
+            }
+        }
+
+        [TestMethod]
+        public void Should_change_activity_project()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryText(stream);
+                repository.Add(new Activity("12345678", "01.01.2001", "Old Message", ""));
+                var command = new Commands(new string[] { "change", "12345678", "--p:Project OK", "--d:12.12.1010", "--m:New message" }, stream);
+                command.Execute();
+                ActivitysField(stream, "project").ShouldContain("Project OK");
+                ActivitysField(stream, "date").ShouldContain("12.12.1010");
+                ActivitysField(stream, "message").ShouldContain("New message");
             }
         }
 

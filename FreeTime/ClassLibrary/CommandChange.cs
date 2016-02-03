@@ -10,7 +10,7 @@ namespace ClassLibrary
 
         public CommandChange()
         {
-            command = "change <id> [--message:<message>] [--date:<date>]";
+            command = "change <id> [--project:<project>] [--date:<date>] [--message:<message>]";
         }
 
         public string Execute(Arguments arg, Stream stream)
@@ -27,16 +27,21 @@ namespace ClassLibrary
                 repository.ChangeMessage(arg["<id>"], arg["[--message:<message>]"]);
                 change += " message";
             }
+
+            if (arg["[--project:<project>]"] != "")
+            {
+                repository.ChangeProject(arg["<id>"], arg["[--project:<project>]"]);
+                change += " project";
+            }
             return "Cange" + change;
         }
 
         public string Info()
         {
             var info = new StringBuilder();
-            info.Append(command);
-            info.Append(' ', 55 - command.Length);
-            info.Append("Changes the activity message, date or both.");
-            info.Append(Environment.NewLine);
+            var newLine = Environment.NewLine;
+            info.Append(command+newLine);
+            info.Append($"       Changes the activity message, date or both.{newLine}{newLine}");
             return info.ToString();
         }
 

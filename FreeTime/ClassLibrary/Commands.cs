@@ -1,6 +1,4 @@
-﻿
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
     using System.Collections.Generic;
     using System.IO;

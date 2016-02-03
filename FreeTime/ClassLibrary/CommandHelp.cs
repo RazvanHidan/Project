@@ -21,10 +21,9 @@ namespace ClassLibrary
         public string Info()
         {
             var info = new StringBuilder();
-            info.Append(command);
-            info.Append(' ', 55 - command.Length);
-            info.Append("Provides Help information for available commands.");
-            info.Append(Environment.NewLine);
+            var newLine = Environment.NewLine;
+            info.Append(command+newLine);
+            info.Append($"       Provides Help information for available commands.{newLine}{newLine}");
             return info.ToString();
         }
 

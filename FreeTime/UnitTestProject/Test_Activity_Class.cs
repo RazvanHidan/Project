@@ -50,11 +50,17 @@ namespace UnitTestProject
         }
 
         [TestMethod]
-        public void Activity_Change_Date()
+        public void New_activity_has_no_project()
         {
             var activity = new Activity("Test");
-            activity.ChangeDate("11.02.2015");
-            activity.List()["date"].ShouldContain("11.02.2015 00:00:00");
+            activity.List()["project"].ShouldBeEmpty();
+        }
+
+        [TestMethod]
+        public void New_activity_should_contain_a_project_label()
+        {
+            var activity = new Activity("Test","Project I");
+            activity.List()["project"].Equals("Project I");
         }
     }
 }

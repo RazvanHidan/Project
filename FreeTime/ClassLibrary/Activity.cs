@@ -9,9 +9,10 @@ namespace ClassLibrary
 {
     public class Activity
     {
-        private string message;
-        private string date;
         private string guid;
+        private string project;
+        private string date;
+        private string message;
 
         public Activity()
         {
@@ -20,16 +21,18 @@ namespace ClassLibrary
             guid = null;
         }
 
-        public Activity(string message)
+        public Activity(string message,string project="")
         {
             DateTostring(DateTime.UtcNow);
             this.message = message;
             guid = Guid.NewGuid().ToString().Substring(0, 8);
+            this.project = project;
         }
 
-        public Activity(string id,string date,string message)
+        public Activity(string id,string date,string message,string project)
         {
             guid = id;
+            this.project = project;
             this.date= date;
             this.message = message;
         }
@@ -38,6 +41,7 @@ namespace ClassLibrary
         {
             var activity = new Dictionary<string, string>();
             activity.Add("id", guid);
+            activity.Add("project", project);
             activity.Add("date", date);
             activity.Add("message", message);
             return activity;
@@ -57,13 +61,13 @@ namespace ClassLibrary
         {
             var element = line.Split(new string[] { separator }, StringSplitOptions.None);
             guid = element[0];
-            date = element[1];
-            message = element[2];
+            project = element[1];
+            date = element[2];
+            message = element[3];
         }
 
         private void DateTostring(DateTime date)
         {
-            //this.date = date.ToString("G", CultureInfo.InvariantCulture);
             this.date = date.ToString();
         }
     }

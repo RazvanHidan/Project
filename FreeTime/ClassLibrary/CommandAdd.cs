@@ -10,23 +10,25 @@ namespace ClassLibrary
 
         public CommandAdd()
         {
-            command = "add <message>";
+            command = "add [--project:<project>] <message>";
         }
 
         public string Execute(Arguments arg, Stream stream)
         {
             var repository = new RepositoryText(stream);
-            repository.Add(new Activity(arg["<message>"]));
+            if (arg["[--project:<project>]"] != "")
+                repository.Add(new Activity(arg["<message>"], arg["[--project:<project>]"]));
+            else
+                repository.Add(new Activity(arg["<message>"]));
             return "Added a new activity";
         }
 
         public string Info()
         {
             var info = new StringBuilder();
-            info.Append(command);
-            info.Append(' ', 55 - command.Length);
-            info.Append("Add a new activity.");
-            info.Append(Environment.NewLine);
+            var newLine = Environment.NewLine;
+            info.Append(command + newLine);
+            info.Append($"       Add a new activity.{newLine}{newLine}");
             return info.ToString();
         }
 

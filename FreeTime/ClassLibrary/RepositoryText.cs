@@ -65,6 +65,20 @@ namespace ClassLibrary
             AddToStream(content.ToString());
         }
 
+        public void ChangeProject(string id, string newProject)
+        {
+            foreach (var activity in List())
+            {
+                if (activity.List()["id"] == id)
+                {
+                    var message = activity.List()["message"];
+                    var date = activity.List()["date"];
+                    DeleteActivity(id);
+                    Add(new Activity(id, date, message, newProject));
+                    break;
+                }
+            }
+        }
         public void ChangeDate(string id, string newDate)
         {
             foreach (var activity in List())
@@ -72,8 +86,9 @@ namespace ClassLibrary
                 if (activity.List()["id"] == id)
                 {
                     var message = activity.List()["message"];
+                    var project = activity.List()["project"];
                     DeleteActivity(id);
-                    Add(new Activity(id,newDate, message));
+                    Add(new Activity(id,newDate, message,project));
                     break;
                 }
             }
@@ -86,8 +101,9 @@ namespace ClassLibrary
                 if (activity.List()["id"] == id)
                 {
                     var date = activity.List()["date"];
+                    var project = activity.List()["project"];
                     DeleteActivity(id);
-                    Add(new Activity(id,date, newMessage));
+                    Add(new Activity(id,date, newMessage,project));
                     break;
                 }
             }

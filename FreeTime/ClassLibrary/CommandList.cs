@@ -54,10 +54,9 @@ namespace ClassLibrary
         public string Info()
         {
             var info = new StringBuilder();
-            info.Append(command);
-            info.Append(' ', 55 - command.Length);
-            info.Append("Displays all/last week activities or export HTML or CSV format Documents");
-            info.Append(Environment.NewLine);
+            var newLine = Environment.NewLine;
+            info.Append(command+newLine);
+            info.Append($"       Displays all/last week activities or export HTML or CSV format Documents.{newLine}{newLine}");
             return info.ToString();
         }
 
@@ -68,7 +67,8 @@ namespace ClassLibrary
             foreach (var key in activity.List().Keys)
             {
                 builder.Append(key.ToUpper());
-                builder.Append(' ', (activity.List()[key].Length - key.Length) + 4);
+                var spaceing = activity.List()[key].Length - key.Length + 4;
+                builder.Append(' ',spaceing<0?key.Length+4:spaceing);
             }
                 
             builder.Append(Environment.NewLine);
