@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -15,7 +16,7 @@ namespace ClassLibrary
 
         public string Execute(Arguments arg, Stream stream)
         {
-            var builder = new System.Text.StringBuilder();
+            var builder = new StringBuilder();
             var list = new RepositoryText(stream).List();
 
             if (arg["[week]"] == "true")
@@ -40,13 +41,8 @@ namespace ClassLibrary
             foreach (var activity in list)
             {
                 if (builder.Length == 0)
-                    AddHeader(builder,activity);
-                foreach (var element in activity.List().Values)
-                {
-                    builder.Append($"{element} ");
-                    builder.Append(' ', 3);
-                }
-                builder.Append(Environment.NewLine);
+                    Spacing(builder,activity,true);
+                Spacing(builder, activity);
             }
             return builder.ToString();
         }
@@ -62,15 +58,29 @@ namespace ClassLibrary
 
         public string Value() => command;
 
-        private static void AddHeader(StringBuilder builder,Activity activity)
+        private static void Spacing(StringBuilder builder, Activity activity,bool AddHeader=false)
         {
-            foreach (var key in activity.List().Keys)
+            var numberOfSpace = new Dictionary<string, int>
             {
-                builder.Append(key.ToUpper());
-                var spaceing = activity.List()[key].Length - key.Length + 4;
-                builder.Append(' ',spaceing<0?key.Length+4:spaceing);
+                {"id",12 },
+                {"project",14 },
+                {"date",22 },
+                {"message",100}
+            };
+            foreach (var element in activity.List())
+            {
+                var appendString = AddHeader ? element.Key.ToUpper() : element.Value;
+                if (numberOfSpace[element.Key] - appendString.Length > 2)
+                {
+                    builder.Append(appendString);
+                    builder.Append(' ',numberOfSpace[element.Key] - appendString.Length);
+                }
+                else
+                {
+                    builder.Append(appendString.Substring(0, numberOfSpace[element.Key] - 6)+"...");
+                    builder.Append(' ', 3);
+                }
             }
-                
             builder.Append(Environment.NewLine);
         }
     }

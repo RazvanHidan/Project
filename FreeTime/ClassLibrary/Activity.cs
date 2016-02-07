@@ -21,7 +21,7 @@ namespace ClassLibrary
             guid = null;
         }
 
-        public Activity(string message,string project="")
+        public Activity(string message,string project="n/a")
         {
             DateTostring(DateTime.UtcNow);
             this.message = message;

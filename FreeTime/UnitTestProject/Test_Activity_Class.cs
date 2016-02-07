@@ -53,7 +53,7 @@ namespace UnitTestProject
         public void New_activity_has_no_project()
         {
             var activity = new Activity("Test");
-            activity.List()["project"].ShouldBeEmpty();
+            activity.List()["project"].ShouldEqual("n/a");
         }
 
         [TestMethod]
