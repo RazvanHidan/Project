@@ -53,8 +53,8 @@ namespace UnitTestProject
             {
                 GenerateActivity(stream);
                 var command = new Commands(new string[] { "list" }, stream);
-                command.Execute().Contains("activity1");
-                command.Execute().Contains("activity9");
+                command.Execute().ShouldContain("activity1");
+                command.Execute().ShouldContain("activity9");
             }
         }
 
@@ -109,8 +109,8 @@ namespace UnitTestProject
                 GenerateActivity(stream);
                 var repository = new RepositoryText(stream);
                 var command = new Commands(new string[] { "help" }, stream);
-                command.Execute().Contains("list [week]");
-                command.Execute().Contains("add <message>");
+                command.Execute().ShouldContain("list [week]");
+                command.Execute().ShouldContain("add");
             }
         }
 
@@ -150,7 +150,22 @@ namespace UnitTestProject
                 var command = new Commands(new string[] { "add", "--project:Project Number One", "New Activity" }, stream);
                 command.Execute().Equals("Added a new activity");
                 ActivitysField(stream, "message").ShouldContain("New Activity");
-                ActivitysField(stream, "project").Contains("Project Number One");
+                ActivitysField(stream, "project").ShouldContain("Project Number One");
+            }
+        }
+
+        [TestMethod]
+        public void If_an_element_can_not_be_displayed_wholly_will_end_with_3_points()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var command = new Commands(new string[] { "add", "--project:Project Number One and 3 4 5 6", "New Activity" }, stream);
+                command.Execute().Equals("Added a new activity");
+                ActivitysField(stream, "message").ShouldContain("New Activity");
+                ActivitysField(stream, "project").ShouldContain("Project Number One and 3 4 5 6");
+                command = new Commands(new string[] { "list" }, stream);
+                command.Execute().ShouldNotContain("Project Number One and 3 4 5 6");
+                command.Execute().ShouldContain("...");
             }
         }
 

@@ -72,16 +72,20 @@ namespace ClassLibrary
                 var appendString = AddHeader ? element.Key.ToUpper() : element.Value;
                 if (numberOfSpace[element.Key] - appendString.Length > 2)
                 {
-                    builder.Append(appendString);
-                    builder.Append(' ',numberOfSpace[element.Key] - appendString.Length);
+                    Append(builder, appendString, numberOfSpace[element.Key] - appendString.Length);
                 }
                 else
                 {
-                    builder.Append(appendString.Substring(0, numberOfSpace[element.Key] - 6)+"...");
-                    builder.Append(' ', 3);
+                    Append(builder, appendString.Substring(0, numberOfSpace[element.Key] - 6) + "...", 3);
                 }
             }
             builder.Append(Environment.NewLine);
+        }
+
+        private static void Append(StringBuilder builder, string appendString, int numberOfSpace)
+        {
+            builder.Append(appendString);
+            builder.Append(' ', numberOfSpace);
         }
     }
 }

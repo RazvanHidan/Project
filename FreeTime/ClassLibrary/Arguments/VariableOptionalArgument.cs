@@ -26,8 +26,7 @@ namespace ClassLibrary
                 value = "";
             else
             {
-                //int indexSpace = arg.IndexOf(' ')+1;
-                value = arg.Substring(4, arg.Length-4);
+                value = arg.Substring(arg.IndexOf(':')+1);
             }
                 
         }

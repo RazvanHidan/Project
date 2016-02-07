@@ -105,23 +105,23 @@ namespace UnitTestProject
         [TestMethod]
         public void Should_handle_optional_multiple_command_in_order()
         {
-            var schema = "change <id> [--date<date>] [--message<message>]";
-            var arg = new Arguments(schema, new string[] { "change", "1", "--d 02.03.2001" });
+            var schema = "change <id> [--date:<date>] [--message:<message>]";
+            var arg = new Arguments(schema, new string[] { "change", "1", "--d:02.03.2001" });
             arg["change"].ShouldEqual("true");
             arg["<id>"].ShouldEqual("1");
-            arg["[--date<date>]"].ShouldEqual("02.03.2001");
-            arg["[--message<message>]"].ShouldEqual("");
+            arg["[--date:<date>]"].ShouldEqual("02.03.2001");
+            arg["[--message:<message>]"].ShouldEqual("");
         }
 
         [TestMethod]
         public void Should_handle_optional_multiple_command_stepover()
         {
-            var schema = "change <id> [--date<date>] [--message<message>]";
-            var arg = new Arguments(schema, new string[] { "change", "5", "--m Need to work" });
+            var schema = "change <id> [--date:<date>] [--message:<message>]";
+            var arg = new Arguments(schema, new string[] { "change", "5", "--m:Need to work" });
             arg["change"].ShouldEqual("true");
             arg["<id>"].ShouldEqual("5");
-            arg["[--date<date>]"].ShouldEqual("");
-            arg["[--message<message>]"].ShouldEqual("Need to work");
+            arg["[--date:<date>]"].ShouldEqual("");
+            arg["[--message:<message>]"].ShouldEqual("Need to work");
         }
 
         [TestMethod]
