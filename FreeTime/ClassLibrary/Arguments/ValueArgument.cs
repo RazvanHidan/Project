@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System.Collections.Generic;
+
     public class ArgumentValue : Argument
     {
         private readonly string name;
-        private string value="false";
+        private string value = "false";
 
         public ArgumentValue(string name)
         {
@@ -30,5 +29,4 @@ namespace ClassLibrary
             store.Add(name, value);
         }
     }
-
 }

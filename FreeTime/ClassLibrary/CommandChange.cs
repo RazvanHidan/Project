@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Text;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System;
+    using System.IO;
+    using System.Text;
+
     public class CommandChange : Command
     {
         private string command;
@@ -40,7 +40,7 @@ namespace ClassLibrary
         {
             var info = new StringBuilder();
             var newLine = Environment.NewLine;
-            info.Append(command+newLine);
+            info.Append(command + newLine);
             info.Append($"       Changes the activity message, date or both.{newLine}{newLine}");
             return info.ToString();
         }

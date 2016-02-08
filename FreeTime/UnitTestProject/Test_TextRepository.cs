@@ -1,12 +1,10 @@
-﻿using System;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Should;
-using ClassLibrary;
-using System.Globalization;
-
-namespace UnitTestProject
+﻿namespace UnitTestProject
 {
+    using System.IO;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Should;
+    using ClassLibrary;
+
     [TestClass]
     public class Test_Class
     {
@@ -21,7 +19,7 @@ namespace UnitTestProject
         public void TextRepository_First_Add()
         {
             var text = new RepositoryText(new MemoryStream());
-            var activity=new Activity("First add");
+            var activity = new Activity("First add");
             text.Add(activity);
             text.ShouldNotBeNull();
         }
@@ -59,9 +57,9 @@ namespace UnitTestProject
         public void TextRepository_ListWeek()
         {
             var text = new RepositoryText(new MemoryStream());
-            var activity=new Activity("First test");
+            var activity = new Activity("First test");
             text.Add(activity);
-            activity=new Activity("Second 2");
+            activity = new Activity("Second 2");
             text.Add(activity);
             text.ListWeek().Equals(activity);
         }
@@ -69,14 +67,14 @@ namespace UnitTestProject
         [TestMethod]
         public void TextRepository_Change_Date()
         {
-            bool test = false;
+            var test = false;
             var text = new RepositoryText(new MemoryStream());
             var activity = new Activity("First add");
             text.Add(activity);
             var id = activity.List()["id"];
             text.ChangeDate(id, "13.04.2001");
             foreach (var action in text.List())
-                if (id == action.List()["id"] && action.List()["date"].Contains("13.04.2001"))
+                if (id == action.List()[$"id"] && action.List()["date"].Contains("13.04.2001"))
                     test = true;
             test.ShouldBeTrue();
         }
@@ -84,15 +82,17 @@ namespace UnitTestProject
         [TestMethod]
         public void TextRepository_Change_message()
         {
-            bool test = false;
+            var test = false;
             var text = new RepositoryText(new MemoryStream());
             var activity = new Activity(message:"First add");
             text.Add(activity);
             var id = activity.List()["id"];
             text.ChangeMessage(id, "GOgoGo");
             foreach (var action in text.List())
-                if (id == action.List()["id"] && action.List()["message"].Contains("GOgoGo"))
+            {
+                if (id == action.List()[$"id"] && action.List()["message"].Contains("GOgoGo"))
                     test = true;
+            }
             test.ShouldBeTrue();
         }
     }

@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+
     public class CommandList : Command
     {
         private string command;
@@ -23,16 +23,16 @@ namespace ClassLibrary
                 list = new RepositoryText(stream).ListWeek();
             else if (arg["[html]"] == "true")
             {
-                var HTML_path = Directory.GetCurrentDirectory() + @"\RazvanHTML.html";
-                var streamHTML = File.Open(HTML_path, FileMode.Create);
+                var pathHTML = Directory.GetCurrentDirectory() + @"\RazvanHTML.html";
+                var streamHTML = File.Open(pathHTML, FileMode.Create);
                 var html = new DocumentHTML(streamHTML);
                 html.Add(list);
                 return "HTML Document create";
             }
             else if (arg["[csv]"] == "true")
             {
-                var CSV_path = Directory.GetCurrentDirectory() + @"\RazvanCSV.csv";
-                var streamCSV = File.Open(CSV_path, FileMode.Create);
+                var pathCSV = Directory.GetCurrentDirectory() + @"\RazvanCSV.csv";
+                var streamCSV = File.Open(pathCSV, FileMode.Create);
                 var csv = new DocumentCSV(streamCSV);
                 csv.Add(list);
                 return "CSV Document create";
@@ -41,7 +41,7 @@ namespace ClassLibrary
             foreach (var activity in list)
             {
                 if (builder.Length == 0)
-                    Spacing(builder,activity,true);
+                    Spacing(builder, activity, true);
                 Spacing(builder, activity);
             }
             return builder.ToString();
@@ -51,25 +51,25 @@ namespace ClassLibrary
         {
             var info = new StringBuilder();
             var newLine = Environment.NewLine;
-            info.Append(command+newLine);
+            info.Append(command + newLine);
             info.Append($"       Displays all/last week activities or export HTML or CSV format Documents.{newLine}{newLine}");
             return info.ToString();
         }
 
         public string Value() => command;
 
-        private static void Spacing(StringBuilder builder, Activity activity,bool AddHeader=false)
+        private static void Spacing(StringBuilder builder, Activity activity, bool addHeader = false)
         {
             var numberOfSpace = new Dictionary<string, int>
             {
-                {"id",12 },
-                {"project",14 },
-                {"date",22 },
-                {"message",100}
+                {$"id", 12},
+                {$"project", 14},
+                {$"date", 22},
+                {$"message", 100}
             };
             foreach (var element in activity.List())
             {
-                var appendString = AddHeader ? element.Key.ToUpper() : element.Value;
+                var appendString = addHeader ? element.Key.ToUpper() : element.Value;
                 if (numberOfSpace[element.Key] - appendString.Length > 2)
                 {
                     Append(builder, appendString, numberOfSpace[element.Key] - appendString.Length);

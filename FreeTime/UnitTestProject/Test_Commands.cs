@@ -1,14 +1,12 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using ClassLibrary;
-using Should;
-using System.Linq;
-
-namespace UnitTestProject
+﻿namespace UnitTestProject
 {
+    using System;
+    using System.Collections.Generic;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System.IO;
+    using ClassLibrary;
+    using Should;
+
     [TestClass]
     public class Test_Commands
     {
@@ -65,7 +63,7 @@ namespace UnitTestProject
             {
                 GenerateActivity(stream);
                 var repository = new RepositoryText(stream);
-                repository.Add(new Activity("12345678", "01.01.2001", "Old Message",""));
+                repository.Add(new Activity("12345678", "01.01.2001", "Old Message", ""));
                 var command = new Commands(new string[] { "change", "12345678", "--m:New Message" }, stream);
                 command.Execute();
                 ActivitysField(stream, "message").ShouldContain("New Message");
@@ -79,7 +77,7 @@ namespace UnitTestProject
             {
                 GenerateActivity(stream);
                 var repository = new RepositoryText(stream);
-                repository.Add(new Activity("12345678", "01.01.2001", "Old Message",""));
+                repository.Add(new Activity("12345678", "01.01.2001", "Old Message", ""));
                 var command = new Commands(new string[] { "change", "12345678", "--d:11.11.1010" }, stream);
                 command.Execute();
                 ActivitysField(stream, "date").ShouldContain("11.11.1010");
@@ -122,7 +120,7 @@ namespace UnitTestProject
                 GenerateActivity(stream);
                 var repository = new RepositoryText(stream);
                 var date = DateTime.UtcNow.AddDays(-8).ToString();
-                repository.Add(new Activity("12345678", date, "Old Message",""));
+                repository.Add(new Activity("12345678", date, "Old Message", ""));
                 var command = new Commands(new string[] { "list", "week" }, stream);
                 command.Execute().ShouldNotContain("Old Message");
             }
@@ -191,10 +189,10 @@ namespace UnitTestProject
                 repository.Add(new Activity("activity" + i.ToString()));
         }
 
-        private static IEnumerable<string> ActivitysField(MemoryStream stream,string field)
+        private static IEnumerable<string> ActivitysField(MemoryStream stream, string field)
         {
             var repository = new RepositoryText(stream);
-            foreach(var activity in repository.List())
+            foreach (var activity in repository.List())
             {
                 yield return activity.List()[field];
             }

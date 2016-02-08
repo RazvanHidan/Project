@@ -16,7 +16,7 @@
             {"help",new CommandHelp() }
         };
 
-        public Commands(string[] args,Stream stream)
+        public Commands(string[] args, Stream stream)
         {
             this.stream = stream;
             this.args = args;
@@ -24,15 +24,15 @@
             ParseArguments(args);
         }
 
+        public string Execute() => command.Execute(new Arguments(command.Value(), args), stream);
+
         private void ParseArguments(string[] args)
         {
             if (dictonary.ContainsKey(args[0]))
-                command=dictonary[args[0]];
+                command = dictonary[args[0]];
             else
                 throw new InvalidArgument(args[0]);
         }
-
-        public string Execute() => command.Execute(new Arguments(command.Value(), args), stream);
 
         private static void CheckThatThereAreArguments(string[] args)
         {

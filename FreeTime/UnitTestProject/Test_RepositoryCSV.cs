@@ -1,13 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ClassLibrary;
-using System.IO;
-using Should;
-
-namespace UnitTestProject
+﻿namespace UnitTestProject
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using ClassLibrary;
+    using System.IO;
+
     [TestClass]
     public class Test_RepositoryCSV
     {

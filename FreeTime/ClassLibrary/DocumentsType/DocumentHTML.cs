@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
-    public class DocumentHTML 
+    using System.Collections.Generic;
+    using System.IO;
+
+    public class DocumentHTML
     {
         private Stream stream;
 

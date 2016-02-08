@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System;
+    using System.Text;
+
     public class Help
     {
         public string help;
+
         public  Help()
         {
             var nl = Environment.NewLine;

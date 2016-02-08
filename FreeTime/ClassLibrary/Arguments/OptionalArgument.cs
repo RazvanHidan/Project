@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System.Collections.Generic;
+
     public class OptionalArgument : Argument
     {
         private readonly string name;
@@ -14,12 +13,7 @@ namespace ClassLibrary
             this.value = false;
         }
 
-        public bool IsOptioanArgument()
-        {
-            if (value ==false)
-                return true;
-            return false;
-        }
+        public bool IsOptioanArgument() => !value;
 
         public void Parse(string arg)
         {

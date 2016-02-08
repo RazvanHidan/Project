@@ -1,6 +1,5 @@
 ﻿namespace ClassLibrary
 {
-    using System;
     using System.Collections.Generic;
 
     public interface Argument
@@ -9,5 +8,4 @@
         void SaveValue(IDictionary<string, string> store);
         bool IsOptioanArgument();
     }
-
 }

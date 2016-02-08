@@ -2,7 +2,7 @@
 {
     public class ArgumentPattern
     {
-        private readonly string pattern; 
+        private readonly string pattern;
 
         public ArgumentPattern(string pattern)
         {

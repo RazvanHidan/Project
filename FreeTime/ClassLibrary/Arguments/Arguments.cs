@@ -6,9 +6,9 @@
     public class Arguments
     {
         private List<Argument> schema = new List<Argument>();
-        private Dictionary<string, string> argsFound = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> argsFound = new Dictionary<string, string>();
         private int firstLineArguments;
-        private int numberOfOptinalVariable=0;
+        private int numberOfOptinalVariable;
 
         public Arguments(string schema, string[] arguments)
         {
@@ -21,7 +21,6 @@
             var command = commands.Split("\n".ToCharArray());
             foreach (var usage in command)
                 ParseUsage(usage);
-                
         }
 
         private void ParseUsage(string usage)
@@ -60,7 +59,7 @@
                     {
                         ParseArg(arguments, i);
                     }
-                    catch
+                    catch (Exception)
                     {
                         FalseArguments(i);
                         break;
@@ -76,7 +75,7 @@
         {
             var k = i - numberOfOptinalVariable;
             schema[i].Parse(k < arguments.Length ? arguments[k] : string.Empty);
-            schema[i].SaveValue(this.argsFound);
+            schema[i].SaveValue(argsFound);
             if (schema[i].IsOptioanArgument())
                 numberOfOptinalVariable++;
         }

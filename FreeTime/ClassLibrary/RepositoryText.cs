@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+
     public class RepositoryText
     {
         private Stream stream;
@@ -20,21 +17,21 @@ namespace ClassLibrary
         public void Add(Activity activity)
         {
             stream.Seek(0, SeekOrigin.End);
-            StreamWriter sw = new StreamWriter(stream);
-            sw.WriteLine(string.Join("][",activity.List().Values));
+            var sw = new StreamWriter(stream);
+            sw.WriteLine(string.Join("][", activity.List().Values));
             sw.Flush();
         }
 
         public IEnumerable<Activity> List()
         {
             stream.Position = 0;
-            StreamReader sr = new StreamReader(stream);
-            string[] contents = sr.ReadToEnd().Split(new string[] { "\r\n" }, 
+            var sr = new StreamReader(stream);
+            var contents = sr.ReadToEnd().Split(new string[] { "\r\n" },
                 StringSplitOptions.RemoveEmptyEntries);
-            foreach(string line in contents)
+            foreach (var line in contents)
             {
                 var activity = new Activity();
-                activity.ExtractFromString(line,"][");
+                activity.ExtractFromString(line, "][");
                 yield return activity;
             }
         }
@@ -52,16 +49,17 @@ namespace ClassLibrary
                 }
             }
         }
+
         public void DeleteActivity(string id)
         {
             var content = new StringBuilder();
             foreach (var activity in List())
             {
-                if (activity.List()["id"] == id)
+                if (activity.List()[$"id"] == id)
                     continue;
                 content.AppendLine(string.Join("][", activity.List().Values));
             }
-            stream.SetLength(0);    
+            stream.SetLength(0);
             AddToStream(content.ToString());
         }
 
@@ -69,7 +67,7 @@ namespace ClassLibrary
         {
             foreach (var activity in List())
             {
-                if (activity.List()["id"] == id)
+                if (activity.List()[$"id"] == id)
                 {
                     var message = activity.List()["message"];
                     var date = activity.List()["date"];
@@ -79,16 +77,17 @@ namespace ClassLibrary
                 }
             }
         }
+
         public void ChangeDate(string id, string newDate)
         {
             foreach (var activity in List())
             {
-                if (activity.List()["id"] == id)
+                if (activity.List()[$"id"] == id)
                 {
                     var message = activity.List()["message"];
                     var project = activity.List()["project"];
                     DeleteActivity(id);
-                    Add(new Activity(id,newDate, message,project));
+                    Add(new Activity(id, newDate, message, project));
                     break;
                 }
             }
@@ -98,22 +97,21 @@ namespace ClassLibrary
         {
             foreach (var activity in List())
             {
-                if (activity.List()["id"] == id)
+                if (activity.List()[$"id"] == id)
                 {
                     var date = activity.List()["date"];
                     var project = activity.List()["project"];
                     DeleteActivity(id);
-                    Add(new Activity(id,date, newMessage,project));
+                    Add(new Activity(id, date, newMessage, project));
                     break;
                 }
             }
-            
         }
 
         private void AddToStream(string v)
         {
             stream.SetLength(0);
-            StreamWriter sw = new StreamWriter(stream);
+            var sw = new StreamWriter(stream);
             sw.Write(v);
             sw.Flush();
         }

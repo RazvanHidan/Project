@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Text;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System;
+    using System.IO;
+    using System.Text;
+
     public class CommandHelp : Command
     {
         private string command;
@@ -22,7 +22,7 @@ namespace ClassLibrary
         {
             var info = new StringBuilder();
             var newLine = Environment.NewLine;
-            info.Append(command+newLine);
+            info.Append(command + newLine);
             info.Append($"       Provides Help information for available commands.{newLine}{newLine}");
             return info.ToString();
         }

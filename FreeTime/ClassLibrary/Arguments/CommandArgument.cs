@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System.Collections.Generic;
+
     public class CommandArgument : Argument
     {
         private readonly string command;

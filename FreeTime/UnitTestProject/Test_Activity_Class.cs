@@ -1,12 +1,11 @@
-﻿using System;
-using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Should;
-using ClassLibrary;
-using System.Globalization;
-
-namespace UnitTestProject
+﻿namespace UnitTestProject
 {
+    using System;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Should;
+    using ClassLibrary;
+    using System.Globalization;
+
     [TestClass]
     public class Test_Activity_Class
     {
@@ -43,7 +42,7 @@ namespace UnitTestProject
         {
             var activity = new Activity("Test");
             DateTime dateParse;
-            bool containDate = false;
+            var containDate = false;
             if (DateTime.TryParse(activity.List()["date"], CultureInfo.DefaultThreadCurrentUICulture, DateTimeStyles.None, out dateParse))
                 containDate = true;
             containDate.ShouldBeTrue();
@@ -59,7 +58,7 @@ namespace UnitTestProject
         [TestMethod]
         public void New_activity_should_contain_a_project_label()
         {
-            var activity = new Activity("Test","Project I");
+            var activity = new Activity("Test", "Project I");
             activity.List()["project"].Equals("Project I");
         }
     }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System.Collections.Generic;
+    using System.IO;
+
     public class DocumentCSV 
     {
         private Stream stream;
@@ -19,7 +15,7 @@ namespace ClassLibrary
         public void Add(IEnumerable< Activity> activities)
         {
             stream.Seek(0, SeekOrigin.End);
-            StreamWriter sw = new StreamWriter(stream);
+            var sw = new StreamWriter(stream);
             if (stream.Length == 0)
                 AddHeader();
             foreach (var activity in activities)
@@ -37,7 +33,7 @@ namespace ClassLibrary
         {
             var activity = new Activity();
             stream.Seek(0, SeekOrigin.End);
-            StreamWriter sw = new StreamWriter(stream);
+            var sw = new StreamWriter(stream);
             sw.WriteLine(string.Join(" ; ", activity.List().Keys));
             sw.Flush();
         }

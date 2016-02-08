@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Activity
     {
         private string guid;
@@ -21,7 +17,7 @@ namespace ClassLibrary
             guid = null;
         }
 
-        public Activity(string message,string project="n/a")
+        public Activity(string message, string project = "n/a")
         {
             DateTostring(DateTime.UtcNow);
             this.message = message;
@@ -29,21 +25,21 @@ namespace ClassLibrary
             this.project = project;
         }
 
-        public Activity(string id,string date,string message,string project)
+        public Activity(string id, string date, string message, string project)
         {
             guid = id;
             this.project = project;
-            this.date= date;
+            this.date = date;
             this.message = message;
         }
 
-        public Dictionary<string,string> List()
+        public Dictionary<string, string> List()
         {
             var activity = new Dictionary<string, string>();
-            activity.Add("id", guid);
-            activity.Add("project", project);
-            activity.Add("date", date);
-            activity.Add("message", message);
+            activity.Add($"id", guid);
+            activity.Add($"project", project);
+            activity.Add($"date", date);
+            activity.Add($"message", message);
             return activity;
         }
 
@@ -54,10 +50,10 @@ namespace ClassLibrary
 
         public void ChangeMessage(string newMessage)
         {
-            message=newMessage;
+            message = newMessage;
         }
 
-        public void ExtractFromString(string line,string separator)
+        public void ExtractFromString(string line, string separator)
         {
             var element = line.Split(new string[] { separator }, StringSplitOptions.None);
             guid = element[0];

@@ -1,9 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Text;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System;
+    using System.IO;
+    using System.Text;
+
     public class CommandAdd : Command
     {
         private string command;

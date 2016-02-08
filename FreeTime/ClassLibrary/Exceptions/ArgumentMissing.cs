@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
-    public class ArgumentMissing:Exception
+    using System;
+    public class ArgumentMissing : Exception
     {
         public ArgumentMissing()
         {

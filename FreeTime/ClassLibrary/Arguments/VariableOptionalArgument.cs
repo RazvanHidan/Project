@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace ClassLibrary
+﻿namespace ClassLibrary
 {
+    using System.Collections.Generic;
+
     internal class VariableOptionalArgument : Argument
     {
         private readonly string name;
@@ -13,22 +12,16 @@ namespace ClassLibrary
             this.name = name;
         }
 
-        public bool IsOptioanArgument()
-        {
-            if(value=="")
-                return true;
-            return false;
-        }
+        public bool IsOptioanArgument() => value == "" ? true : false;
 
         public void Parse(string arg)
         {
            if (arg == string.Empty || !(arg.StartsWith(name.Substring(1, 3))))
-                value = "";
+                value = $"";
             else
             {
-                value = arg.Substring(arg.IndexOf(':')+1);
-            }
-                
+                value = arg.Substring(arg.IndexOf(':') + 1);
+            }   
         }
 
         public void SaveValue(IDictionary<string, string> store)

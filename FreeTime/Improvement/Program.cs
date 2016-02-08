@@ -27,7 +27,7 @@ namespace Improvement
                 }
                 catch (ArgumentMissing e)
                 {
-                    Console.WriteLine("Argument {0}", e.Message);
+                    Console.WriteLine($"Argument {e.Message}");
                     Console.WriteLine(new Help().help);
                 }
             }

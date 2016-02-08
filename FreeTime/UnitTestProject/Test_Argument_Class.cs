@@ -1,12 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using ClassLibrary;
-using Should;
-
-namespace UnitTestProject
+﻿namespace UnitTestProject
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using ClassLibrary;
+    using Should;
+
     [TestClass]
     public class Test_Argument_Class
     {
@@ -139,7 +136,7 @@ namespace UnitTestProject
         public void Should_handle_optional_multiple_command_in_order_project_date_message()
         {
             var schema = "change <id> [--project:<project>] [--date:<date>] [--message:<message>]";
-            var arg = new Arguments(schema, new string[] { "change", "1","--p:Project One", "--d:02.03.2001","--m:New Message" });
+            var arg = new Arguments(schema, new string[] { "change", "1", "--p:Project One", "--d:02.03.2001", "--m:New Message" });
             arg["change"].ShouldEqual("true");
             arg["<id>"].ShouldEqual("1");
             arg["[--date:<date>]"].ShouldEqual("02.03.2001");
