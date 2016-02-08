@@ -37,7 +37,7 @@
         private static void CheckThatThereAreArguments(string[] args)
         {
             if (args.Length == 0)
-                throw new ArgumentMissing();
+                throw new ArgumentMissing("is missing");
         }
     }
 }
