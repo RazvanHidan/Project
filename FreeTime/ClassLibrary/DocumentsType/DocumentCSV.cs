@@ -16,10 +16,11 @@
         {
             stream.Seek(0, SeekOrigin.End);
             var sw = new StreamWriter(stream);
-            if (stream.Length == 0)
-                AddHeader();
+            
             foreach (var activity in activities)
             {
+                if (stream.Length == 0)
+                    AddHeader(activity);
                 foreach (var element in activity.List().Values)
                 {
                     sw.Write($" {element} ,");
@@ -29,9 +30,8 @@
             sw.Flush();
         }
 
-        private void AddHeader()
+        private void AddHeader(Activity activity)
         {
-            var activity = new Activity();
             stream.Seek(0, SeekOrigin.End);
             var sw = new StreamWriter(stream);
             sw.WriteLine(string.Join(" ; ", activity.List().Keys));

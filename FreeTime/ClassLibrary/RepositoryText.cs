@@ -30,9 +30,7 @@
                 StringSplitOptions.RemoveEmptyEntries);
             foreach (var line in contents)
             {
-                var activity = new Activity();
-                activity.ExtractFromString(line, "][");
-                yield return activity;
+                yield return ExtractFromString(line, "]["); ;
             }
         }
 
@@ -101,6 +99,7 @@
                 {
                     var date = activity.List()["date"];
                     var project = activity.List()["project"];
+                    var temp = activity;
                     DeleteActivity(id);
                     Add(new Activity(id, date, newMessage, project));
                     break;
@@ -114,6 +113,12 @@
             var sw = new StreamWriter(stream);
             sw.Write(v);
             sw.Flush();
+        }
+
+        private Activity ExtractFromString(string line, string separator)
+        {
+            var element = line.Split(new string[] { separator }, StringSplitOptions.None);
+            return new Activity(element[0], element[2], element[3], element[1]);
         }
     }
 }
