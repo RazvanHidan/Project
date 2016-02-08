@@ -13,21 +13,23 @@ namespace Improvement
         static void Main(string[] args)
         {
             var path = Directory.GetCurrentDirectory() + @"\Razvan.txt";
-            var stream = File.Open(path, FileMode.OpenOrCreate);
-            try
+            using (var stream = File.Open(path, FileMode.OpenOrCreate))
             {
-                var command = new Commands(args, stream);
-                Console.WriteLine(command.Execute());
-            }
-            catch (InvalidArgument e)
-            {
-                Console.WriteLine($"Argument \"{ e.Message}\" is not valid");
-                Console.WriteLine(new Help().help);
-            }
-            catch(ArgumentMissing e)
-            {
-                Console.WriteLine("Argument {0}",e.Message);
-                Console.WriteLine(new Help().help);
+                try
+                {
+                    var command = new Commands(args, stream);
+                    Console.WriteLine(command.Execute());
+                }
+                catch (InvalidArgument e)
+                {
+                    Console.WriteLine($"Argument \"{ e.Message}\" is not valid");
+                    Console.WriteLine(new Help().help);
+                }
+                catch (ArgumentMissing e)
+                {
+                    Console.WriteLine("Argument {0}", e.Message);
+                    Console.WriteLine(new Help().help);
+                }
             }
         }
     }
