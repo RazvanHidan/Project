@@ -62,8 +62,15 @@
             using (var stream = new MemoryStream())
             {
                 GenerateActivity(stream);
-                var repository = new RepositoryText(stream);
-                repository.Add(new Activity("12345678", "01.01.2001", "Old Message", ""));
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
                 var command = new Commands(new string[] { "change", "12345678", "--m:New Message" }, stream);
                 command.Execute();
                 ActivitysField(stream, "message").ShouldContain("New Message");
@@ -76,8 +83,15 @@
             using (var stream = new MemoryStream())
             {
                 GenerateActivity(stream);
-                var repository = new RepositoryText(stream);
-                repository.Add(new Activity("12345678", "01.01.2001", "Old Message", ""));
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
                 var command = new Commands(new string[] { "change", "12345678", "--d:11.11.1010" }, stream);
                 command.Execute();
                 ActivitysField(stream, "date").ShouldContain("11.11.1010");
@@ -90,8 +104,15 @@
             using (var stream = new MemoryStream())
             {
                 GenerateActivity(stream);
-                var repository = new RepositoryText(stream);
-                repository.Add(new Activity("12345678", "01.01.2001", "Old Message", ""));
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
                 var command = new Commands(new string[] { "change", "12345678", "--d:11.11.1010", "--m:New message" }, stream);
                 command.Execute();
                 ActivitysField(stream, "date").ShouldContain("11.11.1010");
@@ -105,7 +126,7 @@
             using (var stream = new MemoryStream())
             {
                 GenerateActivity(stream);
-                var repository = new RepositoryText(stream);
+                var repository = new RepositoryXML(stream);
                 var command = new Commands(new string[] { "help" }, stream);
                 command.Execute().ShouldContain("list [week]");
                 command.Execute().ShouldContain("add");
@@ -118,10 +139,21 @@
             using (var stream = new MemoryStream())
             {
                 GenerateActivity(stream);
-                var repository = new RepositoryText(stream);
+                var repository = new RepositoryXML(stream);
                 var date = DateTime.UtcNow.AddDays(-8).ToString();
-                repository.Add(new Activity("12345678", date, "Old Message", ""));
+                var activity = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date",date },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
+                activity["date"] = DateTime.UtcNow.ToString();
+                activity["message"] = "New Message";
+                repository.Add(new Activity(activity));
                 var command = new Commands(new string[] { "list", "week" }, stream);
+                command.Execute().ShouldContain("New Message");
                 command.Execute().ShouldNotContain("Old Message");
             }
         }
@@ -132,7 +164,7 @@
             using (var stream = new MemoryStream())
             {
                 GenerateActivity(stream);
-                var repository = new RepositoryText(stream);
+                var repository = new RepositoryXML(stream);
                 repository.Add(new Activity("Testing"));
                 var command = new Commands(new string[] { "list" }, stream);
                 command.Execute().ShouldContain("ID");
@@ -172,8 +204,15 @@
         {
             using (var stream = new MemoryStream())
             {
-                var repository = new RepositoryText(stream);
-                repository.Add(new Activity("12345678", "01.01.2001", "Old Message", ""));
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
                 var command = new Commands(new string[] { "change", "12345678", "--p:Project OK", "--d:12.12.1010", "--m:New message" }, stream);
                 command.Execute();
                 ActivitysField(stream, "project").ShouldContain("Project OK");
@@ -184,14 +223,14 @@
 
         private static void GenerateActivity(MemoryStream stream)
         {
-            var repository = new RepositoryText(stream);
+            var repository = new RepositoryXML(stream);
             for (int i = 1; i < 10; i++)
                 repository.Add(new Activity("activity" + i.ToString()));
         }
 
         private static IEnumerable<string> ActivitysField(MemoryStream stream, string field)
         {
-            var repository = new RepositoryText(stream);
+            var repository = new RepositoryXML(stream);
             foreach (var activity in repository.List())
             {
                 yield return activity.List()[field];

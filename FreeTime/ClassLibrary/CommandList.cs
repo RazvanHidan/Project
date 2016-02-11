@@ -17,10 +17,10 @@
         public string Execute(Arguments arg, Stream stream)
         {
             var builder = new StringBuilder();
-            var list = new RepositoryText(stream).List();
+            var list = new RepositoryXML(stream).List();
 
             if (arg["[week]"] == "true")
-                list = new RepositoryText(stream).ListWeek();
+                list = new RepositoryXML(stream).ListWeek();
             else if (arg["[html]"] == "true")
             {
                 var pathHTML = Directory.GetCurrentDirectory() + @"\RazvanHTML.html";

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using System.Xml;
 
 namespace Improvement
 {
@@ -13,7 +14,8 @@ namespace Improvement
         static void Main(string[] args)
         {
             var path = Directory.GetCurrentDirectory() + @"\Razvan.txt";
-            using (var stream = File.Open(path, FileMode.OpenOrCreate))
+            var pathXml = Directory.GetCurrentDirectory() + @"\Razvanss.xml";
+            using (var stream = File.Open(pathXml, FileMode.OpenOrCreate))
             {
                 try
                 {
@@ -31,6 +33,7 @@ namespace Improvement
                     Console.WriteLine(new Help().help);
                 }
             }
+
         }
     }
 }

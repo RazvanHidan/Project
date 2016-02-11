@@ -57,13 +57,15 @@
     <Compile Include="Arguments\OptionalArgument.cs" />
     <Compile Include="DocumentsType\DocumentCSV.cs" />
     <Compile Include="DocumentsType\DocumentHTML.cs" />
-    <Compile Include="RepositoryText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Arguments\ValueArgument.cs" />
     <Compile Include="Arguments\VariableOptionalArgument.cs" />
+    <Compile Include="RepositoryXML.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

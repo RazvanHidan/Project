@@ -15,7 +15,7 @@
 
         public string Execute(Arguments arg, Stream stream)
         {
-            var repository = new RepositoryText(stream);
+            var repository = new RepositoryXML(stream);
             if (arg["[--project:<project>]"] != "")
                 repository.Add(new Activity(arg["<message>"], arg["[--project:<project>]"]));
             else
