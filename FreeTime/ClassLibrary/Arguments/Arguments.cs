@@ -8,7 +8,7 @@
         private List<Argument> schema = new List<Argument>();
         private readonly Dictionary<string, string> argsFound = new Dictionary<string, string>();
         private int firstLineArguments;
-        private int numberOfOptinalVariable;
+        private int schemaLine;
 
         public Arguments(string schema, string[] arguments)
         {
@@ -20,7 +20,10 @@
         {
             var command = commands.Split("\n".ToCharArray());
             foreach (var usage in command)
+            {
+                schemaLine++;
                 ParseUsage(usage);
+            }
         }
 
         private void ParseUsage(string usage)
@@ -28,7 +31,12 @@
             var terms = usage.Split(" ".ToCharArray());
             firstLineArguments = terms.Length;
             foreach (var term in terms)
-                ParseTerm(term);
+            {
+                if (schemaLine == 1)
+                    ParseTerm(term);
+                else
+                    schema.Add(new FalseArgument(term));
+            }
         }
 
         private void ParseTerm(string term)
@@ -52,32 +60,37 @@
 
         private void ParseArguments(string[] arguments)
         {
-            for (int i = 0; i < schema.Count; i++)
+            var argumentList = new List<string>();
+            foreach (var arg in arguments)
+                argumentList.Add(arg);
+            var schemaList = new List<Argument>();
+            foreach (var element in schema)
+                schemaList.Add(element);
+            foreach (var element in schema)
             {
-                if (i >= firstLineArguments)
-                    try
-                    {
-                        ParseArg(arguments, i);
-                    }
-                    catch (Exception)
-                    {
-                        FalseArguments(i);
-                        break;
-                    }
-                else
+                if (element.GetType() == typeof(VariableOptionalArgument)|| element.GetType() == typeof(OptionalArgument))
                 {
-                    ParseArg(arguments, i);
+                    for(int i=0;i<arguments.Length;i++)
+                    {
+                        element.Parse(arguments[i]);
+                        if (element.IsValid(arguments[i]))
+                        {
+                            argumentList.RemoveAt(argumentList.IndexOf(arguments[i]));
+                            element.SaveValue(argsFound);
+                            break;
+                        }
+                        if (i == arguments.Length - 1)
+                            element.SaveValue(argsFound);
+                    }
+                    schemaList.RemoveAt(schemaList.IndexOf(element));
                 }
             }
-        }
 
-        private void ParseArg(string[] arguments, int i)
-        {
-            var k = i - numberOfOptinalVariable;
-            schema[i].Parse(k < arguments.Length ? arguments[k] : string.Empty);
-            schema[i].SaveValue(argsFound);
-            if (schema[i].IsOptioanArgument())
-                numberOfOptinalVariable++;
+            for (int i = 0; i < schemaList.Count; i++)
+            {
+                schemaList[i].Parse(i < argumentList.Count ? argumentList[i] : string.Empty);
+                schemaList[i].SaveValue(argsFound);
+            }
         }
 
         private void FalseArguments(int i)

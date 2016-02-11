@@ -3,31 +3,29 @@
     using System;
     using System.Collections.Generic;
 
-    public class OptionalArgument : Argument
+    internal class FalseArgument : Argument
     {
-        private readonly string name;
-        private bool value;
+        private string name;
+        private string value;
 
-        public OptionalArgument(string name)
+        public FalseArgument(string name)
         {
             this.name = name;
-            this.value = false;
         }
 
         public bool IsValid(string arg)
         {
-            return name == $"[{arg}]";
+            return false;
         }
 
         public void Parse(string arg)
         {
-            value = name == $"[{arg}]";
+            value = "false";
         }
 
         public void SaveValue(IDictionary<string, string> store)
         {
-            store.Add(name, value.ToString().ToLower());
+            store.Add(name,value);
         }
     }
-
 }

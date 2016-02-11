@@ -1,5 +1,6 @@
 ﻿namespace ClassLibrary
 {
+    using System;
     using System.Collections.Generic;
 
     public class ArgumentValue : Argument
@@ -12,7 +13,7 @@
             this.name = name;
         }
 
-        public bool IsOptioanArgument()
+        public bool IsValid(string arg)
         {
             return false;
         }

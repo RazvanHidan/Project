@@ -1,5 +1,6 @@
 ﻿namespace ClassLibrary
 {
+    using System;
     using System.Collections.Generic;
 
     internal class VariableOptionalArgument : Argument
@@ -12,7 +13,10 @@
             this.name = name;
         }
 
-        public bool IsOptioanArgument() => value == "" ? true : false;
+        public bool IsValid(string arg)
+        {
+            return value!="";
+        }
 
         public void Parse(string arg)
         {

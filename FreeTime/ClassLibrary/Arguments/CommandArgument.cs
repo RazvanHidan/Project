@@ -1,5 +1,6 @@
 ﻿namespace ClassLibrary
 {
+    using System;
     using System.Collections.Generic;
 
     public class CommandArgument : Argument
@@ -13,7 +14,7 @@
             this.command = command;
         }
 
-        public bool IsOptioanArgument()
+        public bool IsValid(string arg)
         {
             return false;
         }

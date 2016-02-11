@@ -93,8 +93,8 @@
             var arg = new Arguments(schema, new string[] { "list", "week", "add", "Go To" });
             arg["list"].ShouldEqual("true");
             arg["[week]"].ShouldEqual("true");
-            arg["add"].ShouldEqual("true");
-            arg["<message>"].ShouldEqual("Go To");
+            arg["add"].ShouldEqual("false");
+            arg["<message>"].ShouldEqual("false");
             arg["help"].ShouldEqual("false");
             arg["[list]"].ShouldEqual("false");
         }
