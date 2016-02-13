@@ -32,6 +32,10 @@ namespace Improvement
                     Console.WriteLine($"Argument {e.Message}");
                     Console.WriteLine(new Help().help);
                 }
+                catch(RepositoryEmty e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
 
         }

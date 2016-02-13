@@ -16,7 +16,15 @@
         {
             var command = new Commands(new string[] { }, new MemoryStream());
         }
-        
+
+        [TestMethod]
+        [ExpectedException(typeof(RepositoryEmty))]
+        public void Should_throw_exception_RepositoryEmty_if_try_to_list_a_emty_repository()
+        {
+            var command = new Commands(new string[] { "list" }, new MemoryStream());
+            command.Execute();
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentMissing))]
         public void Should_throw_exception_ArgumentMissing_if_an_argument_is_missing()

@@ -33,7 +33,7 @@
                 repository.Change(arg["<id>"], "project", arg["[--project:<project>]"]);
                 change += " project";
             }
-            return "Cange" + change;
+            return "Change" + change;
         }
 
         public string Info()

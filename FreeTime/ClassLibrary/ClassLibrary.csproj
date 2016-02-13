@@ -52,6 +52,7 @@
     <Compile Include="CommandList.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Command.cs" />
+    <Compile Include="Exceptions\RepositoryEmty.cs" />
     <Compile Include="Help.cs" />
     <Compile Include="Exceptions\InvalidArgument.cs" />
     <Compile Include="Exceptions\ArgumentMissing.cs" />
