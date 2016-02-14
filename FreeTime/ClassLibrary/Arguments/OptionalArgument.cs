@@ -21,7 +21,10 @@
 
         public void Parse(string arg)
         {
-            value = name == $"[{arg}]";
+            if (arg == string.Empty)
+                throw new InvalidArgument(arg);
+            else
+                value = name == $"[{arg}]";
         }
 
         public void SaveValue(IDictionary<string, string> store)

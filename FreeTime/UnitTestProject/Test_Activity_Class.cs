@@ -52,7 +52,7 @@
         public void New_activity_has_no_project()
         {
             var activity = new Activity("Test");
-            activity.List()["project"].ShouldEqual("n/a");
+            activity.List()["project"].ShouldEqual("");
         }
 
         [TestMethod]

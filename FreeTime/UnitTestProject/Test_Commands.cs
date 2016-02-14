@@ -42,6 +42,86 @@
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidArgument))]
+        public void Should_throw_invalid_argument_if_the_optional_command_is_incomplet()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
+                var command = new Commands(new string[] { "change", "12345678", "--proj" }, stream);
+                command.Execute();
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidFormat))]
+        public void Should_throw_invalid_format_if_the_optional_command_date_is_not_valid_format()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
+                var command = new Commands(new string[] { "change", "12345678", "--date:date" }, stream);
+                command.Execute();
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidFormat))]
+        public void Should_optional_command_date_is_not_valid_format()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
+                var command = new Commands(new string[] { "change", "12345678", "--date:" }, stream);
+                command.Execute();
+            }
+        }
+
+        [TestMethod]
+        public void Should_delet_the_message_if_optional_command_change_message_is_emty()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
+                var command = new Commands(new string[] { "change", "12345678", "--message:" }, stream);
+                command.Execute();
+                ActivitysField(stream, "message").ShouldContain("");
+            }
+        }
+
+        [TestMethod]
         public void Should_add_to_stream_a_new_activity()
         {
             using (var stream = new MemoryStream())
@@ -79,7 +159,7 @@
                     {"message","Old message" }
                 };
                 repository.Add(new Activity(activity));
-                var command = new Commands(new string[] { "change", "12345678", "--m:New Message" }, stream);
+                var command = new Commands(new string[] { "change", "12345678", "--message:New Message" }, stream);
                 command.Execute();
                 ActivitysField(stream, "message").ShouldContain("New Message");
             }
@@ -100,9 +180,9 @@
                     {"message","Old message" }
                 };
                 repository.Add(new Activity(activity));
-                var command = new Commands(new string[] { "change", "12345678", "--d:11.11.1010" }, stream);
+                var command = new Commands(new string[] { "change", "12345678", "--date:11.11.1010" }, stream);
                 command.Execute();
-                ActivitysField(stream, "date").ShouldContain("11.11.1010");
+                ActivitysField(stream, "date").ShouldContain("11.11.1010 00:00:00");
             }
         }
 
@@ -121,9 +201,9 @@
                     {"message","Old message" }
                 };
                 repository.Add(new Activity(activity));
-                var command = new Commands(new string[] { "change", "12345678", "--d:11.11.1010", "--m:New message" }, stream);
+                var command = new Commands(new string[] { "change", "12345678", "--date:11.11.1010", "--message:New message" }, stream);
                 command.Execute();
-                ActivitysField(stream, "date").ShouldContain("11.11.1010");
+                ActivitysField(stream, "date").ShouldContain("11.11.1010 00:00:00");
                 ActivitysField(stream, "message").ShouldContain("New message");
             }
         }
@@ -221,13 +301,27 @@
                     {"message","Old message" }
                 };
                 repository.Add(new Activity(activity));
-                var command = new Commands(new string[] { "change", "12345678", "--p:Project OK", "--d:12.12.1010", "--m:New message" }, stream);
+                var command = new Commands(new string[] { "change", "12345678", "--project:Project OK", "--date:12.12.1010", "--message:New message" }, stream);
                 command.Execute();
                 ActivitysField(stream, "project").ShouldContain("Project OK");
-                ActivitysField(stream, "date").ShouldContain("12.12.1010");
+                ActivitysField(stream, "date").ShouldContain("12.12.1010 00:00:00");
                 ActivitysField(stream, "message").ShouldContain("New message");
             }
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidArgument))]
+        public void Should_throw_invalid_argument_if_optinal_argument_is_not_written_complet()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryXML(stream);
+                var command = new Commands(new string[] { "add", "--proj", "New message" }, stream);
+                command.Execute();
+                ActivitysField(stream, "message").ShouldContain("New message");
+            }
+        }
+
 
         private static void GenerateActivity(MemoryStream stream)
         {

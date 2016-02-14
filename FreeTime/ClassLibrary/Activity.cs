@@ -13,7 +13,7 @@
         */
         private Dictionary<string, string> activity=new Dictionary<string, string>();
 
-        public Activity(string message, string project = "n/a")
+        public Activity(string message, string project = "")
         {
             var date = DateTime.UtcNow.ToString();
             //this.message = message;

@@ -37,6 +37,29 @@
         }
 
         [TestMethod]
+        [ExpectedException(typeof(InvalidArgument))]
+        public void Should_throw_invalid_argument_if_argument_is_not_complet_written()
+        {
+            var arg = new Arguments("list [week]", new string[] { "list", "weee" });
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidArgument))]
+        public void Should_throw_invalid_argument_if_optional_argument_is_not_valid()
+        {
+            var arg = new Arguments("add [--project:<project>] <message>", new string[] { "add", "--pro","Message is here"});
+        }
+
+        [TestMethod]
+        public void Should_return_emty_field_if_name_is_emtry_string()
+        {
+            var arg = new Arguments("change <id> [--project:<project>]", "change 4449a497 --project:".Split(" ".ToCharArray()));
+            arg["change"].ShouldEqual("true");
+            arg["<id>"].ShouldEqual("4449a497");
+            arg["[--project:<project>]"].ShouldEqual("");
+        }
+
+        [TestMethod]
         public void Should_return_false_when_querying_the_valaue_of_an_optional_argument_which_is_missing()
         {
             var arg = new Arguments("list [week]", "list".Split(" ".ToCharArray()));
@@ -103,21 +126,21 @@
         public void Should_handle_optional_multiple_command_in_order()
         {
             var schema = "change <id> [--date:<date>] [--message:<message>]";
-            var arg = new Arguments(schema, new string[] { "change", "1", "--d:02.03.2001" });
+            var arg = new Arguments(schema, new string[] { "change", "1", "--date:02.03.2001" });
             arg["change"].ShouldEqual("true");
             arg["<id>"].ShouldEqual("1");
             arg["[--date:<date>]"].ShouldEqual("02.03.2001");
-            arg["[--message:<message>]"].ShouldEqual("");
+            arg["[--message:<message>]"].ShouldEqual("false");
         }
 
         [TestMethod]
         public void Should_handle_optional_multiple_command_stepover()
         {
             var schema = "change <id> [--date:<date>] [--message:<message>]";
-            var arg = new Arguments(schema, new string[] { "change", "5", "--m:Need to work" });
+            var arg = new Arguments(schema, new string[] { "change", "5", "--message:Need to work" });
             arg["change"].ShouldEqual("true");
             arg["<id>"].ShouldEqual("5");
-            arg["[--date:<date>]"].ShouldEqual("");
+            arg["[--date:<date>]"].ShouldEqual("false");
             arg["[--message:<message>]"].ShouldEqual("Need to work");
         }
 
@@ -136,7 +159,7 @@
         public void Should_handle_optional_multiple_command_in_order_project_date_message()
         {
             var schema = "change <id> [--project:<project>] [--date:<date>] [--message:<message>]";
-            var arg = new Arguments(schema, new string[] { "change", "1", "--p:Project One", "--d:02.03.2001", "--m:New Message" });
+            var arg = new Arguments(schema, new string[] { "change", "1", "--project:Project One", "--date:02.03.2001", "--message:New Message" });
             arg["change"].ShouldEqual("true");
             arg["<id>"].ShouldEqual("1");
             arg["[--date:<date>]"].ShouldEqual("02.03.2001");

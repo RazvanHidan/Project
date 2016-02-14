@@ -15,16 +15,19 @@
 
         public bool IsValid(string arg)
         {
-            return value!="";
+            return value!="false";
         }
 
         public void Parse(string arg)
         {
-           if (arg == string.Empty || !(arg.StartsWith(name.Substring(1, 3))))
-                value = $"";
+            if (arg == string.Empty || !(arg.StartsWith(name.Substring(1, 3))))
+                value = $"false";
             else
             {
-                value = arg.Substring(arg.IndexOf(':') + 1);
+                if (arg.IndexOf(":") != -1 && name.Substring(1,name.IndexOf(':'))==arg.Substring(0,arg.IndexOf(':')+1))
+                    value = arg.Substring(arg.IndexOf(':') + 1);
+                else
+                    throw new InvalidArgument($"{arg}");
             }   
         }
 

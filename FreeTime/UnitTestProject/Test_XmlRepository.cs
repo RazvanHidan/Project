@@ -70,15 +70,47 @@
             {
                 {"id","12345678" },
                 {"project","n/a" },
-                {"date","11.12.2015" },
+                {"date","11.12.2015 22:11:2015" },
                 {"message","Old activity" }
             };
             text.Add(new Activity(activity));
             var beforStremList = StreamList(text);
-            beforStremList.ShouldContain("11.12.2015");
-            text.Change("12345678", "date", "12.22.2056");
+            beforStremList.ShouldContain("11.12.2015 22:11:2015");
+            text.Change("12345678", "date", "12.10.2056 12:11:23");
             var afterStremList = StreamList(text);
-            afterStremList.ShouldContain("12.22.2056");
+            afterStremList.ShouldContain("12.10.2056 12:11:23");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidFormat))]
+        public void Repository_change_date_throw_InvalidFormat_Exception_if_date_format_is_not_valid()
+        {
+            var text = new RepositoryXML(new MemoryStream());
+            var activity = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","n/a" },
+                {"date","11.12.2015 22:11:2015" },
+                {"message","Old activity" }
+            };
+            text.Add(new Activity(activity));
+            text.Change("12345678", "date", "25.25.2002");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidID))]
+        public void Throw_InvalidID_Exception_if_try_to_change_an_invalid_ID()
+        {
+            var text = new RepositoryXML(new MemoryStream());
+            var activity = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","n/a" },
+                {"date","11.12.2015 22:11:2015" },
+                {"message","Old activity" }
+            };
+            text.Add(new Activity(activity));
+            text.Change("12345677", "message", "This is the message");
         }
 
         private static string StreamList(RepositoryXML text)

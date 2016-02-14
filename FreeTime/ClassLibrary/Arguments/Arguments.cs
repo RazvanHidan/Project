@@ -70,7 +70,7 @@
             {
                 if (element.GetType() == typeof(VariableOptionalArgument)|| element.GetType() == typeof(OptionalArgument))
                 {
-                    for(int i=0;i<arguments.Length;i++)
+                    for (int i=0;i<arguments.Length;i++)
                     {
                         element.Parse(arguments[i]);
                         if (element.IsValid(arguments[i]))
@@ -90,6 +90,10 @@
             {
                 schemaList[i].Parse(i < argumentList.Count ? argumentList[i] : string.Empty);
                 schemaList[i].SaveValue(argsFound);
+                if (i == schemaList.Count - 1 && i < argumentList.Count-1)
+                {
+                    throw new InvalidArgument(argumentList[i+1]);
+                }
             }
         }
 

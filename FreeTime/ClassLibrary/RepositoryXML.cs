@@ -64,8 +64,18 @@
             }
         }
 
-        public void Change(string id,string field,string newValue)
+        public void Change(string id,string elementName,string elementNewValue)
         {
+            DateTime tempDadte;
+            bool madeChange= false;
+            if (elementName.Contains("date"))
+            {
+                if (!DateTime.TryParse(elementNewValue, out tempDadte))
+                    throw new InvalidFormat($"{elementNewValue} is not a valid format of date");
+                else
+                    elementNewValue = tempDadte.ToString();
+            }
+
             stream.Position = 0;
             var xmldoc = new XmlDataDocument();
             xmldoc.Load(stream);
@@ -74,11 +84,14 @@
             {
                 if (node.SelectSingleNode("id").InnerText == id)
                 {
-                    node.SelectSingleNode($"{field}").InnerText = newValue;
+                    node.SelectSingleNode($"{elementName}").InnerText = elementNewValue;
                     stream.SetLength(0);
                     xmldoc.Save(stream);
+                    madeChange = true;
                 }
             }
+            if (!madeChange)
+                throw new InvalidID($"{id} is not found");
         }
     }
 }
