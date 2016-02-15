@@ -15,13 +15,13 @@
 
         public bool IsValid(string arg)
         {
-            return value!="false";
+            return value!="";
         }
 
         public void Parse(string arg)
         {
             if (arg == string.Empty || !(arg.StartsWith(name.Substring(1, 3))))
-                value = $"false";
+                value = $"";
             else
             {
                 if (arg.IndexOf(":") != -1 && name.Substring(1,name.IndexOf(':'))==arg.Substring(0,arg.IndexOf(':')+1))

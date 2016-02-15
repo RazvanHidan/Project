@@ -5,49 +5,55 @@
 
     public class Activity
     {
-        /*
-        private string guid;
-        private string project;
-        private string date;
-        private string message;
-        */
         private Dictionary<string, string> activity=new Dictionary<string, string>();
 
         public Activity(string message, string project = "")
         {
             var date = DateTime.UtcNow.ToString();
-            //this.message = message;
             var guid = Guid.NewGuid().ToString().Substring(0, 8);
-            //this.project = project;
             activity.Add($"id", guid);
             activity.Add($"project", project);
             activity.Add($"date", date);
+            activity.Add($"enddate", date);
             activity.Add($"message", message);
         }
 
-        
-        /*public Activity(string id, string date, string message, string project)
-         {
-            /*
-            guid = id;
-            this.project = project;
-            this.date = date;
-            this.message = message;
-
-            activity["id"] = id;
-            activity["project"] = project;
-            activity["date"] = date;
-            activity["message"] = message;
-        }*/
-
         public Activity(Dictionary<string, string> activity)
         {
-            this.activity = activity;
+            var date = DateTime.UtcNow.ToString();
+            var guid = Guid.NewGuid().ToString().Substring(0, 8);
+            this.activity.Add($"id", guid);
+            this.activity.Add($"project", "");
+            this.activity.Add($"date", date);
+            this.activity.Add($"enddate", date);
+            this.activity.Add($"message","");
+            foreach (var key in activity.Keys)
+                this.activity[key] = activity[key];
+            ValidateDate();
         }
 
         public Dictionary<string, string> List()
         {
             return activity;
+        }
+
+        private void ValidateDate()
+        {
+            var temp = new Dictionary<string, string>();
+            foreach (var key in activity.Keys)
+                temp.Add(key, activity[key]);
+            foreach (var key in temp.Keys)
+            {
+                if (key.Contains("date"))
+                {
+                    DateTime tempDate;
+                    if (!DateTime.TryParse(activity[key], out tempDate))
+                        throw new InvalidFormat($"{activity[key]} is not a valid format of date");
+                    activity[key] = tempDate.ToString();
+                }
+            }
+            if (DateTime.Parse(activity["date"]).CompareTo(DateTime.Parse(activity["enddate"])) == 1) 
+                throw new InvalidFormat($"Activity start in {activity["date"]} and end in {activity["enddate"]}");
         }
     }
 }

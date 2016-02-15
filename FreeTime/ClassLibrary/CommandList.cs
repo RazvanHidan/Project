@@ -70,6 +70,7 @@
                 {$"id", 12},
                 {$"project", 14},
                 {$"date", 22},
+                {$"enddate", 22},
                 {$"message", 100}
             };
             foreach (var element in activity.List())

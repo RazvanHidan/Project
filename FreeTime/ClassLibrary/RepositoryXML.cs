@@ -56,7 +56,7 @@
             foreach (var activity in List())
             {
                 DateTime activityDate;
-                if (DateTime.TryParse(activity.List()["date"], out activityDate))
+                if (DateTime.TryParse(activity.List()["enddate"], out activityDate))
                 {
                     if (activityDate.CompareTo(DateTime.UtcNow.AddDays(-7)) == 1)
                         yield return activity;
@@ -65,25 +65,20 @@
         }
 
         public void Change(string id,string elementName,string elementNewValue)
-        {
-            DateTime tempDadte;
-            bool madeChange= false;
-            if (elementName.Contains("date"))
-            {
-                if (!DateTime.TryParse(elementNewValue, out tempDadte))
-                    throw new InvalidFormat($"{elementNewValue} is not a valid format of date");
-                else
-                    elementNewValue = tempDadte.ToString();
-            }
+        { 
+            bool madeChange = false;
 
             stream.Position = 0;
             var xmldoc = new XmlDataDocument();
             xmldoc.Load(stream);
-            XmlNodeList eleMENTES = xmldoc.SelectNodes("activity");
             foreach (XmlNode node in xmldoc.SelectNodes("//activity"))
             {
                 if (node.SelectSingleNode("id").InnerText == id)
                 {
+                    if (elementName.Contains("date"))
+                    {
+                        ValidateDate(ref elementNewValue,elementName,node);
+                    }
                     node.SelectSingleNode($"{elementName}").InnerText = elementNewValue;
                     stream.SetLength(0);
                     xmldoc.Save(stream);
@@ -91,7 +86,30 @@
                 }
             }
             if (!madeChange)
-                throw new InvalidID($"{id} is not found");
+                throw new InvalidID($"ID \" {id} \" is not found");
+        }
+
+        private static void ValidateDate(ref string date, string type, XmlNode node)
+        {
+            DateTime tempDadte;
+            if (!DateTime.TryParse(date, out tempDadte))
+                throw new InvalidFormat($"{date} is not a valid format of date");
+            else
+                date = tempDadte.ToString();
+            string start;
+            string end;
+            if (type == "date")
+            {
+                end = node.SelectSingleNode("enddate").InnerText;
+                start = tempDadte.ToString();
+            }
+            else
+            {
+                start = node.SelectSingleNode("date").InnerText;
+                end = tempDadte.ToString();
+            }
+            if (DateTime.Parse(start).CompareTo(DateTime.Parse(end)) == 1)
+                throw new InvalidFormat($"Activity start in {start} and end in {end}");
         }
     }
 }

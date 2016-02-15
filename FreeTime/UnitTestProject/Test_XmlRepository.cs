@@ -70,15 +70,15 @@
             {
                 {"id","12345678" },
                 {"project","n/a" },
-                {"date","11.12.2015 22:11:2015" },
+                {"date","11.11.2015 22:11:25" },
                 {"message","Old activity" }
             };
             text.Add(new Activity(activity));
             var beforStremList = StreamList(text);
-            beforStremList.ShouldContain("11.12.2015 22:11:2015");
-            text.Change("12345678", "date", "12.10.2056 12:11:23");
+            beforStremList.ShouldContain("11.11.2015 22:11:25");
+            text.Change("12345678", "date", "09.10.2002 12:11:23");
             var afterStremList = StreamList(text);
-            afterStremList.ShouldContain("12.10.2056 12:11:23");
+            afterStremList.ShouldContain("09.10.2002 12:11:23");
         }
 
         [TestMethod]
@@ -106,11 +106,27 @@
             {
                 {"id","12345678" },
                 {"project","n/a" },
-                {"date","11.12.2015 22:11:2015" },
+                {"date","11.11.2015 22:11:20" },
                 {"message","Old activity" }
             };
             text.Add(new Activity(activity));
             text.Change("12345677", "message", "This is the message");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidFormat))]
+        public void Throw_InvalidFormat_Exception_if_try_to_change_a_date_with_invalid_format_of_date()
+        {
+            var text = new RepositoryXML(new MemoryStream());
+            var activity = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","n/a" },
+                {"date","11.11.2015 22:11:20" },
+                {"message","Old activity" }
+            };
+            text.Add(new Activity(activity));
+            text.Change("12345678", "date", "11.12.yyyy");
         }
 
         private static string StreamList(RepositoryXML text)

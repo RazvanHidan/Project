@@ -1,6 +1,7 @@
 ﻿namespace ClassLibrary
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Text;
 
@@ -10,29 +11,30 @@
 
         public CommandChange()
         {
-            command = "change <id> [--project:<project>] [--date:<date>] [--message:<message>]";
+            command = "change <id> [--project:<project>] [--date:<date>] [--enddate:<enddate>] [--message:<message>]";
         }
 
         public string Execute(Arguments arg, Stream stream)
         {
             var change = "";
             var repository = new RepositoryXML(stream);
-            if (arg["[--date:<date>]"] != "false")
+            var activity = new Dictionary<string, string>();
+            foreach (var element in command.Split(' '))
+                if (arg[element] != ""&&element.StartsWith("[--"))
+                {
+                    var start = element.IndexOf('<') + 1;
+                    var end = element.IndexOf('>');
+                    if (start != 0)
+                    {
+                        activity.Add(element.Substring(start, end - start), arg[element]);
+                    }
+                }
+            foreach (var element in activity)
             {
-                repository.Change(arg["<id>"], "date", arg["[--date:<date>]"]);
-                change += " date";
+                repository.Change(arg["<id>"], element.Key, element.Value);
+                change += element.Key.ToUpper() + " ";
             }
-            if (arg["[--message:<message>]"] != "false")
-            {
-                repository.Change(arg["<id>"], "message", arg["[--message:<message>]"]);
-                change += " message";
-            }
-            if (arg["[--project:<project>]"] != "false")
-            {
-                repository.Change(arg["<id>"], "project", arg["[--project:<project>]"]);
-                change += " project";
-            }
-            return "Change" + change;
+            return "Change " + change;
         }
 
         public string Info()

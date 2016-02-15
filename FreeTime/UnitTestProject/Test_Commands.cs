@@ -83,7 +83,7 @@
 
         [TestMethod]
         [ExpectedException(typeof(InvalidFormat))]
-        public void Should_optional_command_date_is_not_valid_format()
+        public void Should_throw_InvalidFormat_if_date_is_not_valid_format()
         {
             using (var stream = new MemoryStream())
             {
@@ -96,13 +96,14 @@
                     {"message","Old message" }
                 };
                 repository.Add(new Activity(activity));
-                var command = new Commands(new string[] { "change", "12345678", "--date:" }, stream);
+                var command = new Commands(new string[] { "change", "12345678", "--date:\" \"" }, stream);
                 command.Execute();
             }
         }
 
         [TestMethod]
-        public void Should_delet_the_message_if_optional_command_change_message_is_emty()
+        [ExpectedException(typeof(InvalidArgument))]
+        public void Should_throw_invalid_argument_if_optional_command_change_message_is_emty()
         {
             using (var stream = new MemoryStream())
             {
@@ -117,7 +118,6 @@
                 repository.Add(new Activity(activity));
                 var command = new Commands(new string[] { "change", "12345678", "--message:" }, stream);
                 command.Execute();
-                ActivitysField(stream, "message").ShouldContain("");
             }
         }
 
@@ -319,6 +319,49 @@
                 var command = new Commands(new string[] { "add", "--proj", "New message" }, stream);
                 command.Execute();
                 ActivitysField(stream, "message").ShouldContain("New message");
+            }
+        }
+
+        [TestMethod]
+        public void Should_change_activity_enddate()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
+                var command = new Commands(new string[] { "change", "12345678", "--project:Project OK", "--enddate:10.10.2002", "--date:12.12.1010", "--message:New message" }, stream);
+                command.Execute();
+                ActivitysField(stream, "project").ShouldContain("Project OK");
+                ActivitysField(stream, "enddate").ShouldContain("10.10.2002 00:00:00");
+                ActivitysField(stream, "date").ShouldContain("12.12.1010 00:00:00");
+                ActivitysField(stream, "message").ShouldContain("New message");
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidFormat))]
+        public void Should_throw_InvalidFormat_exception_if_try_to_change_Enddate_to_be_earlier_than_startDate()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
+                var command = new Commands(new string[] { "change", "12345678", "--project:Project OK", "--enddate:10.10.2002", "--message:New message" }, stream);
+                command.Execute();
             }
         }
 

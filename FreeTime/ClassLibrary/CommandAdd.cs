@@ -1,6 +1,7 @@
 ﻿namespace ClassLibrary
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Text;
 
@@ -10,16 +11,24 @@
 
         public CommandAdd()
         {
-            command = "add [--project:<project>] <message>";
+            command = "add [--project:<project>] [--date:<date>] [--enddate:<enddate>] <message>";
         }
 
         public string Execute(Arguments arg, Stream stream)
         {
             var repository = new RepositoryXML(stream);
-            if (arg["[--project:<project>]"] != "")
-                repository.Add(new Activity(arg["<message>"], arg["[--project:<project>]"]));
-            else
-                repository.Add(new Activity(arg["<message>"]));
+            var activity=new Dictionary<string,string> ();
+            foreach (var element in command.Split(' '))
+                if (arg[element] != "")
+                {
+                    var start = element.IndexOf('<') + 1;
+                    var end = element.IndexOf('>');
+                    if (start!=0)
+                    {
+                        activity.Add(element.Substring(start, end - start), arg[element]);
+                    }
+                }
+            repository.Add(new Activity(activity));   
             return "Added a new activity";
         }
 
