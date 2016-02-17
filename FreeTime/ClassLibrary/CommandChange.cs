@@ -26,7 +26,7 @@
                     var start = element.IndexOf('<') + 1;
                     var end = element.IndexOf('>');
                     modifiedElements.Add(element.Substring(start, end - start), arg[element]);
-                    change.Append($" {element.ToString()}");
+                    change.Append($" {element.Substring(start, end - start).ToUpper()}");
                 }
             repository.Change(arg["<id>"], modifiedElements);
             return change.ToString();

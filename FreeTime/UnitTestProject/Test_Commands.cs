@@ -283,7 +283,7 @@
                 ActivitysField(stream, "project").ShouldContain("Project Number One and 3 4 5 6");
                 command = new Commands(new string[] { "list" }, stream);
                 command.Execute().ShouldNotContain("Project Number One and 3 4 5 6");
-                command.Execute().ShouldContain("...");
+                command.Execute().ShouldContain("Project ...");
             }
         }
 
@@ -362,6 +362,26 @@
                 repository.Add(new Activity(activity));
                 var command = new Commands(new string[] { "change", "12345678", "--project:Project OK", "--enddate:10.10.2002", "--message:New message" }, stream);
                 command.Execute();
+            }
+        }
+
+        [TestMethod]
+        public void Should_list_activity_duration()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","n/a" },
+                    {"date","11.12.2015" },
+                    {"enddate","12.12.2015 03:19:00" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
+                var command = new Commands(new string[] { "list" }, stream);
+                command.Execute().ShouldContain("27h 19min");
             }
         }
 

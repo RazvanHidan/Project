@@ -148,6 +148,26 @@
             afterStremList.ShouldNotContain("11.11.2015 22:11:25");
         }
 
+        [TestMethod]
+        public void Xml_Repository_Activity_Duration_calculation()
+        {
+            var text = new RepositoryXML(new MemoryStream());
+            var activity = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","n/a" },
+                {"date","11.11.2015 10:11:00" },
+                {"enddate","11.11.2015 10:11:00" },
+                {"message","Old activity" }
+            };
+            text.Add(new Activity(activity));
+            var beforStremList = StreamList(text);
+            beforStremList.ShouldContain("0h 0min");
+            text.Change("12345678", new Dictionary<string, string> { { "enddate", "13.11.2015 10:43:00" } });
+            var afterStremList = StreamList(text);
+            afterStremList.ShouldContain("48h 32min");
+        }
+
         private static string StreamList(RepositoryXML text)
         {
             var listContent = new StringBuilder();

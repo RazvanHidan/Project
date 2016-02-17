@@ -117,5 +117,19 @@
             var activity = new Activity(dictionary);
             activity.List()["enddate"].ShouldContain("11.11.2017 00:00:00");
         }
+
+        [TestMethod]
+        public void Calculating_the_duration_of_an_activity()
+        {
+            var dictionary = new Dictionary<string, string>()
+                {
+                    {"project","n/a" },
+                    {"date","11.11.2016" },
+                    {"enddate", "12.11.2016"},
+                    {"message","Old message" }
+                };
+            var activity = new Activity(dictionary);
+            activity.List()["duration"].ShouldContain("24h 0min");
+        }
     }
 }

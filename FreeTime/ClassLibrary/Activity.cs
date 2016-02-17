@@ -9,13 +9,14 @@
 
         public Activity(string message, string project = "")
         {
-            var date = DateTime.UtcNow.ToString();
+            var date = DateTime.UtcNow;
             var guid = Guid.NewGuid().ToString().Substring(0, 8);
             activity.Add($"id", guid);
             activity.Add($"project", project);
-            activity.Add($"date", date);
-            activity.Add($"enddate", date);
+            activity.Add($"date", date.ToString());
+            activity.Add($"enddate", date.ToString());
             activity.Add($"message", message);
+            activity.Add($"duration", ActivityDuration(date, date));
         }
 
         public Activity(Dictionary<string, string> activity)
@@ -60,8 +61,15 @@
                     activity[key] = tempDate.ToString();
                 }
             }
-            if (DateTime.Parse(activity["date"]).CompareTo(DateTime.Parse(activity["enddate"])) == 1) 
+            activity["duration"] = ActivityDuration(DateTime.Parse(activity["date"]), DateTime.Parse(activity["enddate"]));
+            if (activity["duration"].Contains("-")) 
                 throw new InvalidFormat($"Activity start in {activity["date"]} and end in {activity["enddate"]}");
+        }
+        
+        private static string ActivityDuration(DateTime start, DateTime end)
+        {
+            var duration = (end - start).TotalMinutes;
+            return $"{Math.Truncate(duration / 60)}h {duration % 60}min";
         }
     }
 }
