@@ -57,7 +57,7 @@
             text.Add(new Activity(activity));
             var beforStremList = StreamList(text);
             beforStremList.ShouldContain("Old activity");
-            text.Change("12345678", "message", "New message");
+            text.Change("12345678", new Dictionary<string, string> { { "message", "New message" } });
             var afterStremList = StreamList(text);
             afterStremList.ShouldContain("New message");
         }
@@ -76,7 +76,7 @@
             text.Add(new Activity(activity));
             var beforStremList = StreamList(text);
             beforStremList.ShouldContain("11.11.2015 22:11:25");
-            text.Change("12345678", "date", "09.10.2002 12:11:23");
+            text.Change("12345678", new Dictionary<string, string> { { "date", "09.10.2002 12:11:23" } });
             var afterStremList = StreamList(text);
             afterStremList.ShouldContain("09.10.2002 12:11:23");
         }
@@ -94,7 +94,7 @@
                 {"message","Old activity" }
             };
             text.Add(new Activity(activity));
-            text.Change("12345678", "date", "25.25.2002");
+            text.Change("12345678", new Dictionary<string, string> { { "date", "25.25.2002" } });
         }
 
         [TestMethod]
@@ -110,7 +110,7 @@
                 {"message","Old activity" }
             };
             text.Add(new Activity(activity));
-            text.Change("12345677", "message", "This is the message");
+            text.Change("12345677",new Dictionary<string, string> { { "message", "This is the message" } });
         }
 
         [TestMethod]
@@ -126,7 +126,26 @@
                 {"message","Old activity" }
             };
             text.Add(new Activity(activity));
-            text.Change("12345678", "date", "11.12.yyyy");
+            text.Change("12345678",new Dictionary<string, string> { { "date", "11.12.yyyy" } });
+        }
+
+        [TestMethod]
+        public void Xml_Repository_delete_activity()
+        {
+            var text = new RepositoryXML(new MemoryStream());
+            var activity = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","n/a" },
+                {"date","11.11.2015 22:11:25" },
+                {"message","Old activity" }
+            };
+            text.Add(new Activity(activity));
+            var beforStremList = StreamList(text);
+            beforStremList.ShouldContain("11.11.2015 22:11:25");
+            text.Delete("12345678");
+            var afterStremList = StreamList(text);
+            afterStremList.ShouldNotContain("11.11.2015 22:11:25");
         }
 
         private static string StreamList(RepositoryXML text)

@@ -64,52 +64,38 @@
             }
         }
 
-        public void Change(string id,string elementName,string elementNewValue)
+        public void Change(string id,Dictionary<string,string> newActivityElements)
         { 
-            bool madeChange = false;
+            var newActivity = new Activity(SelectOneActivity(id), newActivityElements);
+            Add(newActivity);
+        }
 
+        public void Delete(string id)
+        {
+            ValidateID(id);
             stream.Position = 0;
             var xmldoc = new XmlDataDocument();
             xmldoc.Load(stream);
-            foreach (XmlNode node in xmldoc.SelectNodes("//activity"))
-            {
-                if (node.SelectSingleNode("id").InnerText == id)
-                {
-                    if (elementName.Contains("date"))
-                    {
-                        ValidateDate(ref elementNewValue,elementName,node);
-                    }
-                    node.SelectSingleNode($"{elementName}").InnerText = elementNewValue;
-                    stream.SetLength(0);
-                    xmldoc.Save(stream);
-                    madeChange = true;
-                }
-            }
-            if (!madeChange)
-                throw new InvalidID($"ID \" {id} \" is not found");
+            xmldoc.DocumentElement.RemoveChild(xmldoc.SelectSingleNode($"//activity[id='{id}']"));
+            stream.SetLength(0);
+            xmldoc.Save(stream);
         }
 
-        private static void ValidateDate(ref string date, string type, XmlNode node)
+        private Activity SelectOneActivity(string id)
         {
-            DateTime tempDadte;
-            if (!DateTime.TryParse(date, out tempDadte))
-                throw new InvalidFormat($"{date} is not a valid format of date");
-            else
-                date = tempDadte.ToString();
-            string start;
-            string end;
-            if (type == "date")
-            {
-                end = node.SelectSingleNode("enddate").InnerText;
-                start = tempDadte.ToString();
-            }
-            else
-            {
-                start = node.SelectSingleNode("date").InnerText;
-                end = tempDadte.ToString();
-            }
-            if (DateTime.Parse(start).CompareTo(DateTime.Parse(end)) == 1)
-                throw new InvalidFormat($"Activity start in {start} and end in {end}");
+            ValidateID(id);
+            foreach (var activity in List())
+                if (activity.List()["id"] == id)
+                    return activity;
+            return default(Activity);
+        }
+
+        private void ValidateID(string id)
+        {
+            foreach (var activity in List())
+                if (activity.List()["id"] == id)
+                    return;
+            throw new InvalidID($"ID \" {id} \" is not found");
         }
     }
 }

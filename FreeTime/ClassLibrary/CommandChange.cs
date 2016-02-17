@@ -16,25 +16,20 @@
 
         public string Execute(Arguments arg, Stream stream)
         {
-            var change = "";
+            var change = new StringBuilder();
+            change.Append("Change ");
             var repository = new RepositoryXML(stream);
-            var activity = new Dictionary<string, string>();
+            var modifiedElements = new Dictionary<string, string>();
             foreach (var element in command.Split(' '))
                 if (arg[element] != ""&&element.StartsWith("[--"))
                 {
                     var start = element.IndexOf('<') + 1;
                     var end = element.IndexOf('>');
-                    if (start != 0)
-                    {
-                        activity.Add(element.Substring(start, end - start), arg[element]);
-                    }
+                    modifiedElements.Add(element.Substring(start, end - start), arg[element]);
+                    change.Append($" {element.ToString()}");
                 }
-            foreach (var element in activity)
-            {
-                repository.Change(arg["<id>"], element.Key, element.Value);
-                change += element.Key.ToUpper() + " ";
-            }
-            return "Change " + change;
+            repository.Change(arg["<id>"], modifiedElements);
+            return change.ToString();
         }
 
         public string Info()

@@ -1,14 +1,14 @@
-﻿using System;
-using ClassLibrary;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using System.Xml;
-
-namespace Improvement
+﻿namespace Improvement
 {
+    using System;
+    using ClassLibrary;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.IO;
+    using System.Xml;
+
     class Program
     {
         static void Main(string[] args)

@@ -32,6 +32,14 @@
             ValidateDate();
         }
 
+        public Activity(Activity oldActivity,Dictionary<string,string> newActivityElements)
+        {
+            activity = oldActivity.List();
+            foreach (var key in newActivityElements.Keys)
+                activity[key] = newActivityElements[key];
+            ValidateDate();
+        }
+
         public Dictionary<string, string> List()
         {
             return activity;
