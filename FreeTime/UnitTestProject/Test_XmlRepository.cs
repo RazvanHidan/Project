@@ -133,7 +133,8 @@
         [TestMethod]
         public void Xml_Repository_delete_activity()
         {
-            var text = new RepositoryXML(new MemoryStream());
+            var stream = new MemoryStream();
+            var text = new RepositoryXML(stream);
             var activity = new Dictionary<string, string>()
             {
                 {"id","12345678" },
@@ -144,9 +145,9 @@
             text.Add(new Activity(activity));
             var beforStremList = StreamList(text);
             beforStremList.ShouldContain("11.11.2015 22:11:25");
+            var streamLength = stream.Length;
             text.Delete("12345678");
-            var afterStremList = StreamList(text);
-            afterStremList.ShouldNotContain("11.11.2015 22:11:25");
+            streamLength.ShouldNotEqual(stream.Length);
         }
 
         [TestMethod]

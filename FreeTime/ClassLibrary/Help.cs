@@ -17,6 +17,7 @@
             allinfo.Append(new CommandChange().Info());
             allinfo.Append(new CommandHelp().Info());
             allinfo.Append(new CommandList().Info());
+            allinfo.Append(new CommandClear().Info());
             help = allinfo.ToString();
         }
     }

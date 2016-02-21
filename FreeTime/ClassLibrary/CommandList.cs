@@ -16,51 +16,46 @@
 
         public string Execute(Arguments arg, Stream stream)
         {
-            if (stream.Length != 0)
-            {
                 var builder = new StringBuilder();
                 var list = new RepositoryXML(stream).List();
 
-                if (arg["[week]"] == "true")
-                    list = new RepositoryXML(stream).ListWeek();
-                else if (arg["[html]"] == "true")
-                {
-                    var pathHTML = Directory.GetCurrentDirectory() + @"\RazvanHTML.html";
-                    var streamHTML = File.Open(pathHTML, FileMode.Create);
-                    var html = new DocumentHTML(streamHTML);
-                    html.Add(list);
-                    return "HTML Document create";
-                }
-                else if (arg["[csv]"] == "true")
-                {
-                    var pathCSV = Directory.GetCurrentDirectory() + @"\RazvanCSV.csv";
-                    var streamCSV = File.Open(pathCSV, FileMode.Create);
-                    var csv = new DocumentCSV(streamCSV);
-                    csv.Add(list);
-                    return "CSV Document create";
-                }
-                else if (arg["[projects]"] == "true")
-                {
-                    var projects = new RepositoryXML(stream).ListProject();
-                    foreach (var project in projects)
-                    {
-                        if (builder.Length == 0)
-                            SpacingProj(builder, project, true);
-                        SpacingProj(builder, project);
-                    }
-                    return builder.ToString();
-                }
-
-                foreach (var activity in list)
+            if (arg["[week]"] == "true")
+                list = new RepositoryXML(stream).ListWeek();
+            else if (arg["[html]"] == "true")
+            {
+                var pathHTML = Directory.GetCurrentDirectory() + @"\RazvanHTML.html";
+                var streamHTML = File.Open(pathHTML, FileMode.Create);
+                var html = new DocumentHTML(streamHTML);
+                html.Add(list);
+                return "HTML Document create";
+            }
+            else if (arg["[csv]"] == "true")
+            {
+                var pathCSV = Directory.GetCurrentDirectory() + @"\RazvanCSV.csv";
+                var streamCSV = File.Open(pathCSV, FileMode.Create);
+                var csv = new DocumentCSV(streamCSV);
+                csv.Add(list);
+                return "CSV Document create";
+            }
+            else if (arg["[projects]"] == "true")
+            {
+                var projects = new RepositoryXML(stream).ListProject();
+                foreach (var project in projects)
                 {
                     if (builder.Length == 0)
-                        Spacing(builder, activity, true);
-                    Spacing(builder, activity);
+                        SpacingProj(builder, project, true);
+                    SpacingProj(builder, project);
                 }
                 return builder.ToString();
             }
-            else
-                throw new RepositoryEmty("Data Base is emty");
+
+            foreach (var activity in list)
+            {
+                if (builder.Length == 0)
+                    Spacing(builder, activity, true);
+                Spacing(builder, activity);
+            }
+            return builder.ToString();
         }
         
         public string Info()

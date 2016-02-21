@@ -48,6 +48,7 @@
     <Compile Include="CommandAdd.cs" />
     <Compile Include="Arguments\CommandArgument.cs" />
     <Compile Include="CommandChange.cs" />
+    <Compile Include="CommandClear.cs" />
     <Compile Include="CommandHelp.cs" />
     <Compile Include="CommandList.cs" />
     <Compile Include="Commands.cs" />

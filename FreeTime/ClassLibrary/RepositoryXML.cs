@@ -40,9 +40,13 @@
         {
             stream.Position = 0;
             XmlDataDocument xmldoc = new XmlDataDocument();
+            if (stream.Length==0)
+                throw new RepositoryEmty("Data Base is Emty");
             xmldoc.Load(stream);
-
-            foreach(XmlNode node in xmldoc.GetElementsByTagName("activity"))
+            var nodes = xmldoc.GetElementsByTagName("activity");
+            if(nodes.Count==0)
+                throw new RepositoryEmty("Data Base is Emty");
+            foreach (XmlNode node in nodes)
             {
                 var dictonary = new Dictionary<string, string>();
                 foreach (XmlElement childNode in node.ChildNodes)

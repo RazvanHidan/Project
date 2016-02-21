@@ -13,6 +13,7 @@
             {"add",new CommandAdd() },
             {"list",new CommandList() },
             {"change", new CommandChange() },
+            {"clear", new CommandClear() },
             {"help",new CommandHelp() }
         };
 

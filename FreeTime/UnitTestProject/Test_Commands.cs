@@ -428,6 +428,32 @@
             }
         }
 
+        [TestMethod]
+        public void Should_clear_all_activities()
+        {
+            using (var stream = new MemoryStream())
+            {
+                GenerateActivity(stream);
+                ActivitysField(stream, "message").ShouldContain("activity1");
+                var command = new Commands(new string[] { "clear" }, stream);
+                command.Execute().ShouldEqual("Clear all activities");
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(RepositoryEmty))]
+        public void After_clear_all_activities_command_list_throw_RepositoryEmty_exception()
+        {
+            using (var stream = new MemoryStream())
+            {
+                GenerateActivity(stream);
+                ActivitysField(stream, "message").ShouldContain("activity1");
+                var command = new Commands(new string[] { "clear" }, stream);
+                command.Execute().ShouldEqual("Clear all activities");
+                command = new Commands(new string[] { "list" }, stream);
+                command.Execute();
+            }
+        }
 
         private static void GenerateActivity(MemoryStream stream)
         {
