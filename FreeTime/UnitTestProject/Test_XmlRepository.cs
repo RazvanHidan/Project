@@ -38,7 +38,6 @@
             text.Add(new Activity("First add"));
             text.Add(new Activity("First adding"));
             text.Add(new Activity("Message is full"));
-            var contain = false;
             var listContent = StreamList(text);
             listContent.ToString().ShouldContain("Message is full");
         }
@@ -253,6 +252,58 @@
             text.Add(new Activity(activity2));
             text.ListProject().Find(x => x.name.Contains("Project One")).List()["duration"].ShouldEqual("1d 02h 20m");
             text.ListProject().Find(x => x.name.Contains("Project Ten")).List()["duration"].ShouldEqual("05h 22m");
+        }
+
+        [TestMethod]
+        public void Xml_Repository_List_Activities_belong_to_a_given_project()
+        {
+            var text = new RepositoryXML(new MemoryStream());
+            var activity = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","Project One" },
+                {"date","11.11.2015 10:11:00" },
+                {"enddate","11.11.2015 22:46:00" },
+                {"message","Old activity" }
+            };
+            var activity1 = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","Project Ten" },
+                {"date","11.11.2015 5:11:00" },
+                {"enddate","11.11.2015 10:33:00" },
+                {"message","Activity 1" }
+            };
+            var activity2 = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","Project One" },
+                {"date","11.11.2015 10:11:00" },
+                {"enddate","11.11.2015 23:56:00" },
+                {"message","activity3" }
+            };
+            text.Add(new Activity(activity));
+            text.Add(new Activity(activity1));
+            text.Add(new Activity(activity2));
+            text.ListProjectActivities("Project Ten").Count.ShouldEqual(1);
+            text.ListProjectActivities("Project One").Count.ShouldEqual(2);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(InvalidArgument))]
+        public void Xml_Repository_List_Activities_belong_to_a_given_project_throw_Invalid_name_of_project()
+        {
+            var text = new RepositoryXML(new MemoryStream());
+            var activity = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","Project One" },
+                {"date","11.11.2015 10:11:00" },
+                {"enddate","11.11.2015 22:46:00" },
+                {"message","Old activity" }
+            };
+            text.Add(new Activity(activity));;
+            text.ListProjectActivities("Project Ten");
         }
 
         private static string StreamList(RepositoryXML text)

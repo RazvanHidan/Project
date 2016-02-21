@@ -11,7 +11,7 @@
 
         public CommandList()
         {
-            command = "list [week] [csv] [html] [projects]";
+            command = "list [week] [csv] [html] [projects] [--project:<project>]";
         }
 
         public string Execute(Arguments arg, Stream stream)
@@ -47,6 +47,10 @@
                     SpacingProj(builder, project);
                 }
                 return builder.ToString();
+            }
+            else if (arg["[--project:<project>]"] != "")
+            {
+                list = new RepositoryXML(stream).ListProjectActivities(arg["[--project:<project>]"]);
             }
 
             foreach (var activity in list)

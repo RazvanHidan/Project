@@ -441,6 +441,48 @@
         }
 
         [TestMethod]
+        public void Should_list_Activities_from_one_project()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","Razvan" },
+                    {"date","11.12.2015" },
+                    {"enddate","12.12.2015 " },
+                    {"message","First message" }
+                };
+                var activity1 = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","New Project" },
+                    {"date","11.12.2015" },
+                    {"enddate","11.12.2015 02:19:00" },
+                    {"message","Second message" }
+                };
+                var activity2 = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","Razvan" },
+                    {"date","11.12.2015" },
+                    {"enddate","11.12.2015 03:57:00" },
+                    {"message","Third message" }
+                };
+                repository.Add(new Activity(activity));
+                repository.Add(new Activity(activity1));
+                repository.Add(new Activity(activity2));
+                var command = new Commands(new string[] { "list", "--project:Razvan" }, stream);
+                var result = command.Execute();
+                result.ShouldContain("First message");
+                result.ShouldNotContain("Second Message");
+                result.ShouldContain("Third message");
+                
+            }
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(RepositoryEmty))]
         public void After_clear_all_activities_command_list_throw_RepositoryEmty_exception()
         {

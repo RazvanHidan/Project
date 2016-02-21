@@ -102,6 +102,14 @@
             return projects;
         }
 
+        public List<Activity> ListProjectActivities(string projectName)
+        {
+            var i=ListProject().FindIndex(project => project.name == projectName);
+            if (i == -1)
+                throw new InvalidArgument($"Project name:{projectName} is not valid name");
+            return ListProject()[i].activities;
+        }
+
         private string CalculateDuration(string duration, string v)
         {
             var hh = Int32.Parse(duration.Substring(duration.IndexOf('h') - 2, 2)) + Int32.Parse(v.Substring(v.IndexOf('h') - 2, 2));
