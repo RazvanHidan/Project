@@ -78,6 +78,7 @@
             beforStremList.ShouldContain("11.11.2015 22:11:25");
             text.Change("12345678", new Dictionary<string, string> { { "date", "09.10.2002 12:11:23" } });
             var afterStremList = StreamList(text);
+            afterStremList.ShouldNotContain("11.11.2015 22:11:25");
             afterStremList.ShouldContain("09.10.2002 12:11:23");
         }
 

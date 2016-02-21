@@ -67,6 +67,7 @@
         public void Change(string id,Dictionary<string,string> newActivityElements)
         { 
             var newActivity = new Activity(SelectOneActivity(id), newActivityElements);
+            Delete(id);
             Add(newActivity);
         }
 
