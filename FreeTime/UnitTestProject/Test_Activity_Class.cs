@@ -129,7 +129,7 @@
                     {"message","Old message" }
                 };
             var activity = new Activity(dictionary);
-            activity.List()["duration"].ShouldContain("24h 0min");
+            activity.List()["duration"].ShouldContain("1d 00h 00m");
         }
     }
 }

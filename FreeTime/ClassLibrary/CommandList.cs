@@ -82,7 +82,7 @@
                 {$"project", 14},
                 {$"date", 22},
                 {$"enddate", 22},
-                {$"duration",12 },
+                {$"duration",20 },
                 {$"message", 100}
             };
             foreach (var element in activity.List())
@@ -104,9 +104,9 @@
         {
             var numberOfSpace = new Dictionary<string, int>
             {
-                {$"name", 25},
-                {$"count", 12},
-                {$"duration", 25},
+                {$"name", 30},
+                {$"count", 15},
+                {$"duration", 40},
             };
             foreach (var element in project.List())
             {

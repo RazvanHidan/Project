@@ -381,7 +381,8 @@
                 };
                 repository.Add(new Activity(activity));
                 var command = new Commands(new string[] { "list" }, stream);
-                command.Execute().ShouldContain("27h 19min");
+                var s = command.Execute();
+                command.Execute().ShouldContain("1d 03h 19m");
             }
         }
 
@@ -420,9 +421,9 @@
                 repository.Add(new Activity(activity2));
                 var command = new Commands(new string[] { "list","projects" }, stream);
                 var result = command.Execute();
-                result.ShouldContain("26h 19min");
+                result.ShouldContain("1d 02h 19m");
                 result.ShouldContain("Razvan");
-                result.ShouldContain("3h 57min");
+                result.ShouldContain("03h 57m");
                 result.ShouldContain("New Project");
             }
         }

@@ -163,10 +163,10 @@
             };
             text.Add(new Activity(activity));
             var beforStremList = StreamList(text);
-            beforStremList.ShouldContain("0h 0min");
+            beforStremList.ShouldContain("00h 00m");
             text.Change("12345678", new Dictionary<string, string> { { "enddate", "13.11.2015 10:43:00" } });
             var afterStremList = StreamList(text);
-            afterStremList.ShouldContain("48h 32min");
+            afterStremList.ShouldContain("2d 00h 32m");
         }
 
         [TestMethod]
@@ -215,8 +215,43 @@
             text.Add(new Activity(activity));
             text.Add(new Activity(activity1));
             text.Add(new Activity(activity2));
-            text.ListProject().Find(x => x.name.Contains("Project One")).duration.ShouldEqual("6h 20min");
-            text.ListProject().Find(x => x.name.Contains("Project Ten")).duration.ShouldEqual("5h 22min");
+            text.ListProject().Find(x => x.name.Contains("Project One")).List()["duration"].ShouldEqual("06h 20m");
+            text.ListProject().Find(x => x.name.Contains("Project Ten")).List()["duration"].ShouldEqual("05h 22m");
+        }
+
+        [TestMethod]
+        public void Xml_Repository_ListProject_if_duration_is_over_one_day_list_days()
+        {
+            var text = new RepositoryXML(new MemoryStream());
+            var activity = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","Project One" },
+                {"date","11.11.2015 10:11:00" },
+                {"enddate","11.11.2015 22:46:00" },
+                {"message","Old activity" }
+            };
+            var activity1 = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","Project Ten" },
+                {"date","11.11.2015 5:11:00" },
+                {"enddate","11.11.2015 10:33:00" },
+                {"message","Activity 1" }
+            };
+            var activity2 = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","Project One" },
+                {"date","11.11.2015 10:11:00" },
+                {"enddate","11.11.2015 23:56:00" },
+                {"message","activity3" }
+            };
+            text.Add(new Activity(activity));
+            text.Add(new Activity(activity1));
+            text.Add(new Activity(activity2));
+            text.ListProject().Find(x => x.name.Contains("Project One")).List()["duration"].ShouldEqual("1d 02h 20m");
+            text.ListProject().Find(x => x.name.Contains("Project Ten")).List()["duration"].ShouldEqual("05h 22m");
         }
 
         private static string StreamList(RepositoryXML text)
