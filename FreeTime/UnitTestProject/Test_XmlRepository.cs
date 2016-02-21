@@ -169,6 +169,56 @@
             afterStremList.ShouldContain("48h 32min");
         }
 
+        [TestMethod]
+        public void Xml_Repository_ListProject_count_activities_with_the_same_project()
+        {
+            var text = new RepositoryXML(new MemoryStream());
+            text.Add(new Activity("New activity", "Proj 1"));
+            text.Add(new Activity("New activity1", "Proj 2"));
+            text.Add(new Activity("New activity2", "Proj 1"));
+            text.Add(new Activity("New activity3", "Proj 3"));
+            text.Add(new Activity("New activity4", "Proj 1"));
+            text.Add(new Activity("New activity4", "Proj 3"));
+            text.ListProject().Find(x => x.name.Contains("Proj 1")).count.ShouldEqual(3);
+            text.ListProject().Find(x => x.name.Contains("Proj 3")).count.ShouldEqual(2);
+            text.ListProject().Find(x => x.name.Contains("Proj 2")).count.ShouldEqual(1);
+        }
+
+        [TestMethod]
+        public void Xml_Repository_ListProject_count_activities_with_the_same_project_and_calculate_duration()
+        {
+            var text = new RepositoryXML(new MemoryStream());
+            var activity = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","Project One" },
+                {"date","11.11.2015 10:11:00" },
+                {"enddate","11.11.2015 11:46:00" },
+                {"message","Old activity" }
+            };
+            var activity1 = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","Project Ten" },
+                {"date","11.11.2015 5:11:00" },
+                {"enddate","11.11.2015 10:33:00" },
+                {"message","Activity 1" }
+            };
+            var activity2 = new Dictionary<string, string>()
+            {
+                {"id","12345678" },
+                {"project","Project One" },
+                {"date","11.11.2015 10:11:00" },
+                {"enddate","11.11.2015 14:56:00" },
+                {"message","activity3" }
+            };
+            text.Add(new Activity(activity));
+            text.Add(new Activity(activity1));
+            text.Add(new Activity(activity2));
+            text.ListProject().Find(x => x.name.Contains("Project One")).duration.ShouldEqual("6h 20min");
+            text.ListProject().Find(x => x.name.Contains("Project Ten")).duration.ShouldEqual("5h 22min");
+        }
+
         private static string StreamList(RepositoryXML text)
         {
             var listContent = new StringBuilder();

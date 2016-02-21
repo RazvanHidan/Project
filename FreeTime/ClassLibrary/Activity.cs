@@ -69,7 +69,7 @@
         private static string ActivityDuration(DateTime start, DateTime end)
         {
             var duration = (end - start).TotalMinutes;
-            return $"{Math.Truncate(duration / 60)}h {duration % 60}min";
+            return $"{Math.Truncate(duration / 60)}h {Math.Truncate(duration % 60)}min";
         }
     }
 }

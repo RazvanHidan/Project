@@ -82,6 +82,34 @@
             xmldoc.Save(stream);
         }
 
+        public List<Project> ListProject()
+        {
+            var projects = new List<Project>();
+            foreach(var activity in List())
+            {
+                int index = projects.FindIndex(projName => projName.name == activity.List()["project"]);
+                if (index != -1) 
+                {
+                    projects[index].count++;
+                    projects[index].duration = CalculateDuration(projects[index].duration, activity.List()["duration"]);
+                }
+                else
+                    projects.Add(new Project(activity));
+            }
+            return projects;
+        }
+
+        private string CalculateDuration(string duration, string v)
+        {
+            var hh = Int32.Parse(duration.Substring(0, duration.IndexOf('h'))) + Int32.Parse(v.Substring(0, v.IndexOf('h')));
+            var start = duration.IndexOf(' ') + 1;
+            var end = duration.IndexOf('m') - duration.IndexOf(' ')-1;
+            var min = Int32.Parse(duration.Substring(duration.IndexOf(' ') + 1, duration.IndexOf('m') - duration.IndexOf(' ') - 1)) + Int32.Parse(v.Substring(v.IndexOf(' ') + 1, v.IndexOf('m') - v.IndexOf(' ') - 1));
+            hh +=(int) Math.Truncate((decimal)min / 60);
+            min = min % 60;
+            return $"{hh}h {min}min";
+        }
+
         private Activity SelectOneActivity(string id)
         {
             ValidateID(id);

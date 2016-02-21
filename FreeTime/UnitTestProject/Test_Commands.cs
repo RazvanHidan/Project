@@ -385,6 +385,48 @@
             }
         }
 
+        [TestMethod]
+        public void Should_list_Projects_duration_and_name()
+        {
+            using (var stream = new MemoryStream())
+            {
+                var repository = new RepositoryXML(stream);
+                var activity = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","Razvan" },
+                    {"date","11.12.2015" },
+                    {"enddate","12.12.2015 " },
+                    {"message","Old message" }
+                };
+                var activity1 = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","Razvan" },
+                    {"date","11.12.2015" },
+                    {"enddate","11.12.2015 02:19:00" },
+                    {"message","Old message" }
+                };
+                var activity2 = new Dictionary<string, string>()
+                {
+                    {"id","12345678" },
+                    {"project","New Project" },
+                    {"date","11.12.2015" },
+                    {"enddate","11.12.2015 03:57:00" },
+                    {"message","Old message" }
+                };
+                repository.Add(new Activity(activity));
+                repository.Add(new Activity(activity1));
+                repository.Add(new Activity(activity2));
+                var command = new Commands(new string[] { "list","projects" }, stream);
+                var result = command.Execute();
+                result.ShouldContain("26h 19min");
+                result.ShouldContain("Razvan");
+                result.ShouldContain("3h 57min");
+                result.ShouldContain("New Project");
+            }
+        }
+
 
         private static void GenerateActivity(MemoryStream stream)
         {
