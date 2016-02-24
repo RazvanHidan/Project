@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity.cs" />
+    <Compile Include="ArgumentsConverter.cs" />
     <Compile Include="Arguments\Argument.cs" />
     <Compile Include="Arguments\ArgumentPattern.cs" />
     <Compile Include="Arguments\Arguments.cs" />

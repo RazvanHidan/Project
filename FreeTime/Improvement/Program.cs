@@ -19,7 +19,7 @@
             {
                 try
                 {
-                    var command = new Commands(args, stream);
+                    var command = new Commands(new ArgumentsConverter(args).Conversion(), stream);
                     Console.WriteLine(command.Execute());
                 }
                 catch (InvalidArgument e)

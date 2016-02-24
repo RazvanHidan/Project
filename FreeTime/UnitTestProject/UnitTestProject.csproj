@@ -62,6 +62,7 @@
     <Compile Include="Test_Argument_Class.cs" />
     <Compile Include="Test_RepositoryCSV.cs" />
     <Compile Include="Test_XmlRepository.cs" />
+    <Compile Include="Test_ArgumentsConversion.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary\ClassLibrary.csproj">
